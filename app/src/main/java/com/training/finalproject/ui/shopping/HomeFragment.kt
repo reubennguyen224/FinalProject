@@ -60,8 +60,9 @@ class HomeFragment : Fragment() {
         } // event click 1 product
 
         viewModel.homeListLiveData.observe(viewLifecycleOwner) { result ->
-            homeAdapter.diff.submitList(result)
             binding.productListContainer.isRefreshing = false
+            homeAdapter.diff.submitList(result)
+
         } //observe home list to display
 
         viewModel.cartListLiveData.observe(viewLifecycleOwner) {

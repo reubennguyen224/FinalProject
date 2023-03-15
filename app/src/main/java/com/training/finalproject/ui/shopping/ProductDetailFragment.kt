@@ -6,20 +6,20 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.view.ViewTreeObserver
+import android.widget.LinearLayout
 import android.widget.Toast
+import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.fragment.app.activityViewModels
+import androidx.viewpager.widget.ViewPager
 import androidx.viewpager2.widget.ViewPager2
 import androidx.viewpager2.widget.ViewPager2.OnPageChangeCallback
 import com.bumptech.glide.Glide
 import com.google.android.material.tabs.TabLayout
 import com.google.android.material.tabs.TabLayout.OnTabSelectedListener
 import com.training.finalproject.R
-import com.training.finalproject.adapter.TabAdapter
+import com.training.finalproject.adapter.PagerAdapter
 import com.training.finalproject.databinding.FragmentProductDetailBinding
 import com.training.finalproject.model.HomeRecyclerViewItem
-import com.training.finalproject.model.Product
-import com.training.finalproject.ui.dashboard.DashboardFragment
 import com.training.finalproject.utils.MyApplication
 import com.training.finalproject.utils.replaceFragment
 import com.training.finalproject.viewmodel.HomeFragmentViewModel
@@ -89,22 +89,31 @@ class ProductDetailFragment : Fragment() {
                 override fun onTabUnselected(tab: TabLayout.Tab?) = Unit
                 override fun onTabReselected(tab: TabLayout.Tab?) = Unit
             })
+            setupWithViewPager(binding.pagerProduct)
         }
-        val tabAdapter = TabAdapter(childFragmentManager, lifecycle)
+        val pagerAdapter = PagerAdapter(childFragmentManager)
         binding.pagerProduct.apply {
-            adapter = tabAdapter
+            adapter = pagerAdapter
             offscreenPageLimit = 2
         }
 
-        binding.pagerProduct.registerOnPageChangeCallback(object : OnPageChangeCallback() {
+        binding.pagerProduct.addOnPageChangeListener(object : ViewPager.OnPageChangeListener{
+            override fun onPageScrolled(
+                position: Int,
+                positionOffset: Float,
+                positionOffsetPixels: Int
+            ) = Unit
+
             override fun onPageSelected(position: Int) {
                 tabLayout.selectTab(tabLayout.getTabAt(position))
-                val view = (binding.pagerProduct.adapter as TabAdapter).getViewAtPosition(position)
-
-                view?.let {
-                    updateHeightPager(view = view, binding.pagerProduct)
-                }
+//                val view = (binding.pagerProduct.adapter as PagerAdapter).getViewAtPosition(position)
+//
+//                view?.let {
+//                    updateHeightPager(view = view, binding.pagerProduct)
+//                }
             }
+
+            override fun onPageScrollStateChanged(state: Int) = Unit
 
         })
 
@@ -146,7 +155,7 @@ class ProductDetailFragment : Fragment() {
         }
     }
 
-    fun updateHeightPager(view: View, pager: ViewPager2){
+    fun updateHeightPager(view: View, pager: ViewPager){
         view.post {
             val wMeasureSpec = View.MeasureSpec.makeMeasureSpec(view.width, View.MeasureSpec.EXACTLY)
             val hMeasureSpec = View.MeasureSpec.makeMeasureSpec(0, View.MeasureSpec.UNSPECIFIED)
