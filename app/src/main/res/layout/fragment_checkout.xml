@@ -1,0 +1,317 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#E9F1F5"
+    tools:context=".ui.shopping.CheckoutFragment">
+
+    <include
+        android:id="@+id/appBarCheckout"
+        layout="@layout/app_bar_product" />
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:orientation="vertical"
+        android:id="@+id/scrollView"
+        app:layout_constraintBottom_toTopOf="@id/viewBackground"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/appBarCheckout">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <androidx.constraintlayout.widget.Guideline
+                android:id="@+id/guideline9"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                app:layout_constraintGuide_begin="20dp" />
+
+            <androidx.constraintlayout.widget.Guideline
+                android:id="@+id/guideline10"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                app:layout_constraintGuide_end="20dp" />
+
+            <TextView
+                android:id="@+id/txtHeaderShipping"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="25dp"
+                android:text="Shipping Address"
+                android:textAppearance="@style/checkoutWord"
+                app:layout_constraintStart_toEndOf="@id/guideline9"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <View
+                android:id="@+id/viewShipping"
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:background="@drawable/background_new_item"
+                app:layout_constraintBottom_toBottomOf="@id/btnChangeShippingAddress"
+                app:layout_constraintEnd_toStartOf="@id/guideline10"
+                app:layout_constraintStart_toEndOf="@id/guideline9"
+                app:layout_constraintTop_toBottomOf="@id/txtHeaderShipping" />
+
+            <TextView
+                android:id="@+id/txtShippingAddress"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/poppins_light"
+                android:maxWidth="305dp"
+                android:paddingTop="15dp"
+                android:textColor="@color/black"
+                android:textSize="12sp"
+                app:layout_constraintEnd_toEndOf="@id/viewShipping"
+                app:layout_constraintHorizontal_bias="0.3"
+                app:layout_constraintStart_toStartOf="@id/viewShipping"
+                app:layout_constraintTop_toTopOf="@id/viewShipping"
+                tools:text="Domen Tikoro Street:  825 Baker Avenue, Dallas,\nTexas, Zip code  75202" />
+
+            <TextView
+                android:id="@+id/btnChangeShippingAddress"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/poppins_light"
+                android:paddingBottom="16dp"
+                android:text="Change address"
+                android:textColor="@color/price"
+                android:textSize="10sp"
+                app:layout_constraintStart_toStartOf="@id/txtShippingAddress"
+                app:layout_constraintTop_toBottomOf="@id/txtShippingAddress" />
+
+            <TextView
+                android:id="@+id/txtHeaderSummaryItem"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="21dp"
+                android:text="Summary Item"
+                android:textAppearance="@style/checkoutWord"
+                app:layout_constraintStart_toEndOf="@id/guideline9"
+                app:layout_constraintTop_toBottomOf="@id/viewShipping" />
+
+            <View
+                android:id="@+id/viewSummary"
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:background="@drawable/background_new_item"
+                app:layout_constraintBottom_toBottomOf="@id/listSummary"
+                app:layout_constraintEnd_toStartOf="@id/guideline10"
+                app:layout_constraintStart_toEndOf="@id/guideline9"
+                app:layout_constraintTop_toBottomOf="@id/txtHeaderSummaryItem" />
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/listSummary"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:padding="5dp"
+                app:layout_constraintEnd_toEndOf="@id/viewSummary"
+                app:layout_constraintHorizontal_bias="0.0"
+                app:layout_constraintStart_toStartOf="@id/viewSummary"
+                app:layout_constraintTop_toTopOf="@id/viewSummary" />
+
+            <View
+                android:id="@+id/viewCoupon"
+                android:layout_width="0dp"
+                android:layout_height="70dp"
+                android:layout_marginTop="15dp"
+                android:background="@drawable/background_new_item"
+                app:layout_constraintEnd_toStartOf="@id/guideline10"
+                app:layout_constraintStart_toEndOf="@id/guideline9"
+                app:layout_constraintTop_toBottomOf="@id/listSummary" />
+
+            <EditText
+                android:id="@+id/txtCoupon"
+                android:layout_width="150dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="18dp"
+                android:layout_marginTop="20dp"
+                android:layout_marginBottom="18dp"
+                android:background="@color/white"
+                android:hint="Enter Coupon Code"
+                android:singleLine="true"
+                android:textColorHint="#BABEBF"
+                android:textSize="11sp"
+                app:layout_constraintStart_toStartOf="@id/viewCoupon"
+                app:layout_constraintBottom_toBottomOf="@id/viewCoupon"
+                app:layout_constraintTop_toTopOf="@id/viewCoupon" />
+
+            <Button
+                android:id="@+id/btnUseCoupon"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="18dp"
+                android:layout_marginEnd="18dp"
+                android:layout_marginBottom="18dp"
+                android:background="@drawable/background_btn_coupon"
+                android:text="Use Coupon"
+                android:textColor="@color/price"
+                android:textSize="11sp"
+                app:layout_constraintBottom_toBottomOf="@id/viewCoupon"
+                app:layout_constraintEnd_toEndOf="@id/viewCoupon"
+                app:layout_constraintTop_toTopOf="@id/viewCoupon" />
+
+            <TextView
+                android:id="@+id/txtHeaderSummaryOrder"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="15dp"
+                android:text="Summary Order"
+                android:textAppearance="@style/checkoutWord"
+                app:layout_constraintStart_toEndOf="@id/guideline9"
+                app:layout_constraintTop_toBottomOf="@id/viewCoupon" />
+
+            <View
+                android:id="@+id/viewOrder"
+                android:layout_width="0dp"
+                android:layout_height="120dp"
+                android:background="@drawable/background_new_item"
+                app:layout_constraintEnd_toStartOf="@id/guideline10"
+                app:layout_constraintStart_toEndOf="@id/guideline9"
+                app:layout_constraintTop_toBottomOf="@id/txtHeaderSummaryOrder" />
+
+            <TextView
+                android:id="@+id/txtHeaderDeliveryFee"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="15dp"
+                android:text="Delivery Fee"
+                android:textColor="#516971"
+                app:layout_constraintStart_toStartOf="@id/viewOrder"
+                app:layout_constraintTop_toTopOf="@id/viewOrder" />
+
+            <TextView
+                android:id="@+id/txtDeliveryFee"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="15dp"
+                app:layout_constraintEnd_toEndOf="@id/viewOrder"
+                app:layout_constraintTop_toTopOf="@id/viewOrder"
+                tools:text="$4.00" />
+
+            <View
+                android:id="@+id/lineBreak1"
+                android:layout_width="0dp"
+                android:layout_height="1dp"
+                android:layout_marginTop="7dp"
+                android:background="#E2E6E8"
+                app:layout_constraintEnd_toEndOf="@id/txtDeliveryFee"
+                app:layout_constraintStart_toStartOf="@id/txtHeaderDeliveryFee"
+                app:layout_constraintTop_toBottomOf="@id/txtHeaderDeliveryFee" />
+
+            <TextView
+                android:id="@+id/txtHeaderSubtotal"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="15dp"
+                android:layout_marginTop="8dp"
+                android:text="Subtotal"
+                android:textColor="#516971"
+                app:layout_constraintStart_toStartOf="@id/viewOrder"
+                app:layout_constraintTop_toBottomOf="@id/lineBreak1" />
+
+            <TextView
+                android:id="@+id/txtSubtotal"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:layout_marginEnd="15dp"
+                app:layout_constraintEnd_toEndOf="@id/viewOrder"
+                app:layout_constraintTop_toBottomOf="@id/lineBreak1"
+                tools:text="$4.00" />
+
+            <View
+                android:id="@+id/lineBreak2"
+                android:layout_width="0dp"
+                android:layout_height="1dp"
+                android:layout_marginTop="7dp"
+                android:background="#E2E6E8"
+                app:layout_constraintEnd_toEndOf="@id/txtDeliveryFee"
+                app:layout_constraintStart_toStartOf="@id/txtHeaderDeliveryFee"
+                app:layout_constraintTop_toBottomOf="@id/txtHeaderSubtotal" />
+
+            <TextView
+                android:id="@+id/txtHeaderTax"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="15dp"
+                android:layout_marginTop="8dp"
+                android:text="Tax"
+                android:textColor="#516971"
+                app:layout_constraintStart_toStartOf="@id/viewOrder"
+                app:layout_constraintTop_toBottomOf="@id/lineBreak2" />
+
+            <TextView
+                android:id="@+id/txtTax"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:layout_marginEnd="15dp"
+                app:layout_constraintEnd_toEndOf="@id/viewOrder"
+                app:layout_constraintTop_toBottomOf="@id/lineBreak2"
+                tools:text="$4.00" />
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </ScrollView>
+
+    <View
+        android:id="@+id/viewBackground"
+        android:layout_width="match_parent"
+        android:layout_height="117dp"
+        android:background="@drawable/top_round_rectangle"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/scrollView"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <TextView
+        android:id="@+id/txtTotalPayment"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="23dp"
+        android:fontFamily="@font/poppins"
+        android:letterSpacing="0.01"
+        android:text="Total Payment"
+        android:textColor="@color/black"
+        android:textSize="14sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@id/viewBackground"
+        app:layout_constraintVertical_bias="0.3" />
+
+    <TextView
+        android:id="@+id/txtTotalPrice"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="@style/header1"
+        android:textColor="@color/price"
+        android:textSize="20sp"
+        android:textStyle="bold"
+        app:layout_constraintStart_toStartOf="@id/txtTotalPayment"
+        app:layout_constraintTop_toBottomOf="@id/txtTotalPayment"
+        tools:text="$1,468.20" />
+
+    <TextView
+        android:id="@+id/btnBuy"
+        android:layout_width="186dp"
+        android:layout_height="50dp"
+        android:layout_marginEnd="28dp"
+        android:layout_marginBottom="22dp"
+        android:background="@drawable/button_background"
+        android:fontFamily="@font/poppins"
+        android:letterSpacing="0.03"
+        android:paddingTop="15dp"
+        android:text="Continue"
+        android:textAlignment="center"
+        android:textColor="@color/white"
+        android:textSize="13sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="@id/viewBackground"/>
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>
