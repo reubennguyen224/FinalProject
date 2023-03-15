@@ -1,0 +1,116 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:background="@drawable/background_new_item"
+    android:layout_width="160dp"
+    android:layout_height="190dp">
+
+    <ImageView
+        android:id="@+id/imgNewProduct"
+        android:layout_width="match_parent"
+        android:layout_height="97dp"
+        android:scaleType="fitCenter"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/txtNewProductName"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="11dp"
+        android:fontFamily="@font/poppins_light"
+        android:marqueeRepeatLimit="marquee_forever"
+        android:maxWidth="155dp"
+        android:singleLine="true"
+        android:textColor="@color/black"
+        android:textStyle="bold"
+        app:layout_constraintStart_toEndOf="@id/guideline4"
+        app:layout_constraintTop_toBottomOf="@id/imgNewProduct"
+        tools:text="Samsung Z Flip" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guideline4"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_begin="10dp" />
+
+    <TextView
+        android:id="@+id/txtManufactoryName"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:fontFamily="@font/poppins_light"
+        android:marqueeRepeatLimit="marquee_forever"
+        android:maxWidth="90dp"
+        android:singleLine="true"
+        android:textSize="11sp"
+        app:layout_constraintEnd_toStartOf="@id/dotView"
+        app:layout_constraintStart_toEndOf="@id/guideline4"
+        app:layout_constraintTop_toBottomOf="@id/txtNewProductName"
+        tools:text="Samsung Store" />
+
+    <View
+        android:id="@+id/dotView"
+        android:layout_width="3dp"
+        android:layout_height="3dp"
+        android:layout_marginStart="6dp"
+        android:background="@drawable/eclipse127"
+        app:layout_constraintBottom_toBottomOf="@id/txtManufactoryName"
+        app:layout_constraintEnd_toStartOf="@id/imgStar"
+        app:layout_constraintStart_toEndOf="@id/txtManufactoryName"
+        app:layout_constraintTop_toBottomOf="@id/txtNewProductName" />
+
+    <ImageView
+        android:id="@+id/imgStar"
+        android:layout_width="14dp"
+        android:layout_height="14dp"
+        android:layout_marginStart="7dp"
+        android:background="@drawable/star"
+        app:layout_constraintBottom_toBottomOf="@id/txtManufactoryName"
+        app:layout_constraintStart_toEndOf="@id/dotView"
+        app:layout_constraintTop_toBottomOf="@id/txtNewProductName" />
+
+    <TextView
+        android:id="@+id/txtProductRate"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="1dp"
+        android:fontFamily="@font/poppins_light"
+        android:textColor="@color/black"
+        android:textSize="11sp"
+        android:layout_marginTop="2dp"
+        app:layout_constraintBottom_toBottomOf="@id/imgStar"
+        app:layout_constraintStart_toEndOf="@id/imgStar"
+        app:layout_constraintTop_toTopOf="@id/imgStar"
+        tools:text="4.2" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        tools:text="$999.99"
+        android:textColor="@color/price"
+        android:textSize="15sp"
+        android:textStyle="bold"
+        app:layout_constraintStart_toEndOf="@id/guideline4"
+        android:id="@+id/txtPrice"
+        app:layout_constraintTop_toBottomOf="@id/txtManufactoryName"
+        android:lineSpacingExtra="-8sp"
+        app:layout_constraintBottom_toBottomOf="parent"/>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        tools:text="$9,022.99"
+        android:textSize="10sp"
+        android:textColor="@color/original_price"
+        app:layout_constraintTop_toBottomOf="@id/txtManufactoryName"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toEndOf="@id/txtPrice"
+        android:id="@+id/txtOriginalPrice"
+        android:background="@drawable/stroke"
+        android:fontFamily="@font/poppins_light"
+        android:layout_marginStart="15dp"/>
+
+</androidx.constraintlayout.widget.ConstraintLayout>
