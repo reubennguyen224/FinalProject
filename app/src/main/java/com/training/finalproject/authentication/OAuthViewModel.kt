@@ -6,6 +6,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.google.gson.Gson
 import com.training.finalproject.model.User
+import com.training.finalproject.utils.SingleLiveData
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import java.math.BigInteger
@@ -14,8 +15,8 @@ import java.security.MessageDigest
 class OAuthViewModel() : ViewModel() {
     private val _user =
         User(email = "abc@xyz.com", password = "abcd12345", fullName = "Carol Richarmen", id = 10)
-    val statusLogin = MutableLiveData<Boolean>()
-    val statusRegister = MutableLiveData<Boolean>()
+    val statusLogin = SingleLiveData<Boolean>()
+    val statusRegister = SingleLiveData<Boolean>()
     val userAccount = MutableLiveData<User>()
     var token = MutableLiveData<Int>()
 

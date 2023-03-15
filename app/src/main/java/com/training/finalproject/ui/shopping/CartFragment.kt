@@ -11,6 +11,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.training.finalproject.R
 import com.training.finalproject.adapter.CartAdapter
 import com.training.finalproject.databinding.FragmentCartBinding
+import com.training.finalproject.model.Cart
 import com.training.finalproject.model.CartItem
 import com.training.finalproject.utils.MyApplication
 import com.training.finalproject.utils.ProductDecoration
@@ -33,7 +34,7 @@ class CartFragment : Fragment() {
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
         _binding = FragmentCartBinding.inflate(inflater, container, false)
         binding.toolbar.btnCart.visibility = View.INVISIBLE
         viewModel.getCart((activity?.application as MyApplication).repository)
@@ -50,16 +51,31 @@ class CartFragment : Fragment() {
             updateFooter(list)
         }
 
+        cartAdapter.onUpdateNumberClick = {isAdd, position ->
+            viewModel.updateItemCart(position, isAdd)
+            val list = cartAdapter.diff.currentList.toMutableList()
+            val oldItem = list[position]
+            var number = oldItem.number
+            if (isAdd){
+                number = number++
+            } else number = number--
+            val newItem = CartItem(oldItem.id, oldItem.product, number, oldItem.checked)
+            list[position] = newItem
+            cartAdapter.diff.submitList(list)
+            updateFooter(list)
+        }
+
         binding.toolbar.badgeCart.visibility = View.INVISIBLE
 
         cartAdapter.onDeleteClick = { position ->
             val list = cartAdapter.diff.currentList.toMutableList()
             list.removeAt(position)
+            viewModel.deleteItem(position)
             cartAdapter.diff.submitList(list.toList())
             updateFooter(list)
         }
 
-        binding.chkSelectAll.setOnCheckedChangeListener { buttonView, isChecked ->
+        binding.chkSelectAll.setOnCheckedChangeListener { _, isChecked ->
             val list = viewModel.cartList
             for (item in list) item.checked = false
             for (item in list) item.checked = isChecked
@@ -87,7 +103,6 @@ class CartFragment : Fragment() {
             addItemDecoration(ProductDecoration(10))
         }
 
-
     }
 
     private fun updateFooter(list: List<CartItem>) {
@@ -104,7 +119,7 @@ class CartFragment : Fragment() {
         binding.btnBuy.text = "Buy(${tempList.size} item)"
         binding.btnBuy.setOnClickListener {
             if (tempList.size > 0) {
-                viewModel.saveChoosenItem(ArrayList(tempList))
+                viewModel.saveChosenItem(ArrayList(tempList))
                 replaceFragment(CheckoutFragment(), R.id.fragmentContainer, true)
             }
         }

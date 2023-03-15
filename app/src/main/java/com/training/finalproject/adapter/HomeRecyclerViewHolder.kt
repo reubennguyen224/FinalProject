@@ -37,8 +37,9 @@ sealed class HomeRecyclerViewHolder(binding: ViewBinding): RecyclerView.ViewHold
                     LinearLayoutManager.HORIZONTAL,
                     false
                 )
-                val productDecoration = ProductDecoration(20)
+                val productDecoration = ProductDecoration(25)
                 addItemDecoration(productDecoration)
+                while (itemDecorationCount > 1) removeItemDecorationAt(1)
                 setHasFixedSize(true)
                 setItemViewCacheSize(15)
             }

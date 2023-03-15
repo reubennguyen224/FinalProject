@@ -55,7 +55,7 @@ class HomeActivity : AppCompatActivity() {
             replaceFragment(DashboardFragment(), R.id.fragmentContainer, true)
 
         viewModel.getRememberedAccount(getSharedPreferences("saveInformation", MODE_PRIVATE))
-        viewModel.getHomeList()
+
         viewModel.getCart((application as MyApplication).repository)
     }
 

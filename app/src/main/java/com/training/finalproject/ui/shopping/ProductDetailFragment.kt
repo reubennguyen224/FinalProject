@@ -109,12 +109,6 @@ class ProductDetailFragment : Fragment() {
         })
 
         binding.appBar.btnBack.setOnClickListener {
-//            val backStateName = DashboardFragment::class.java.name
-//            val manager = parentFragmentManager
-//            val pop = manager.popBackStackImmediate(backStateName, 0)
-//            if (!pop && manager.findFragmentByTag(backStateName) == null){
-//                replaceFragment(DashboardFragment(), R.id.fragmentContainer, true)
-//            }
             parentFragmentManager.popBackStack()
         }
 

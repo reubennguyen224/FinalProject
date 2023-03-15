@@ -33,13 +33,13 @@ class HomeFragmentViewModel() : ViewModel() {
     }
 
     fun changeNumber(state: Boolean) = viewModelScope.launch(Dispatchers.IO) {
-        if (state == true) {
-            var number = numberProduct.value
+        if (state) {
+            val number = numberProduct.value
             if (number != null) {
                 numberProduct.postValue(number + 1)
             }
         } else {
-            var number = numberProduct.value
+            val number = numberProduct.value
             if (number != null && number > 0) {
                 numberProduct.postValue(number - 1)
             }
@@ -104,6 +104,7 @@ class HomeFragmentViewModel() : ViewModel() {
                         bannerList.addAll(bodyList)
                     homeList[0] = bannerList
                     homeListLiveData.postValue(homeList)
+
                 }
 
                 override fun onFailure(
@@ -116,9 +117,16 @@ class HomeFragmentViewModel() : ViewModel() {
 
     fun getHomeList() {
         viewModelScope.launch {
-            homeList.clear()
-            getAllBanners()
-            getAllProducts()
+//            homeList.clear()
+            val deferredBanner = async(Dispatchers.IO + SupervisorJob()) {
+                getAllBanners()
+            }
+            deferredBanner.await()
+            deferredBanner.getCompleted()
+            val deferredProduct = async(Dispatchers.IO + SupervisorJob()) {
+                getAllProducts()
+            }
+            deferredProduct.await()
             val title = HomeRecyclerViewItem.Title("New Product")
 
             val homeItemList = ArrayList<Any>()
@@ -127,27 +135,30 @@ class HomeFragmentViewModel() : ViewModel() {
             homeItemList.addAll(productList)
 
             homeList = homeItemList
-            delay(1000)
-            homeListLiveData.postValue(homeItemList)
+            homeListLiveData.postValue(homeList)
+        }
+    }
+    private val statusLoadMoreLiveData = MutableLiveData<String>()
+
+    fun loadMore(lastProductId: Int) {
+        viewModelScope.launch(Dispatchers.IO) {
+            var statusLoadMore = ""
+            val loadMoreProduct = getMoreProduct(lastProductId = lastProductId)
+            if (loadMoreProduct.size < 8) statusLoadMore = "OUT_OF_STOCK"
+            else if (loadMoreProduct.size == 8) statusLoadMore = "CAN_LOAD_MORE"
+            statusLoadMoreLiveData.postValue(statusLoadMore)
+            delay(5000)
+            homeList.addAll(loadMoreProduct)
         }
     }
 
-//    fun loadMore() {
-//        viewModelScope.launch(Dispatchers.IO) {
-//            val currentSize = productList.size
-//            if (currentSize + 8 <= _productList.size) {
-//                for (i in currentSize..currentSize + 7) {
-//                    productList.add(_productList[i])
-//                }
-//            } else {
-//                for (i in currentSize.._productList.size)
-//                    productList.add(_productList[i])
-//            }
-//            delay(5000)
-//            productListLiveData.postValue(productList)
-//            getHomeList()
-//        }
-//    }
+    private fun getMoreProduct(lastProductId: Int): ArrayList<HomeRecyclerViewItem.Product>{
+        val result = ArrayList<HomeRecyclerViewItem.Product>()
+        viewModelScope.launch(Dispatchers.IO){
+
+        }
+        return result
+    }
 
     fun getRememberedAccount(sharedPreferences: SharedPreferences) {
         viewModelScope.launch(Dispatchers.IO) {
@@ -190,7 +201,7 @@ class HomeFragmentViewModel() : ViewModel() {
             }
         }
 
-    val cartRoomList = ArrayList<Cart>()
+    private val cartRoomList = ArrayList<Cart>()
 
     fun getCart(repository: AppRepository) {
         viewModelScope.launch(Dispatchers.IO) {
@@ -219,7 +230,7 @@ class HomeFragmentViewModel() : ViewModel() {
 
     }
 
-    fun saveChoosenItem(list: ArrayList<CartItem>) {
+    fun saveChosenItem(list: ArrayList<CartItem>) {
         viewModelScope.launch(Dispatchers.IO) {
             chosenItemCartList.postValue(null)
             chosenItemCartList.postValue(list)
@@ -236,6 +247,35 @@ class HomeFragmentViewModel() : ViewModel() {
                         checkoutCart.add(j)
             }
             viewModelRepository.deleteCart(checkoutCart.toTypedArray())
+        }
+    }
+
+    fun deleteItem(position: Int){
+        viewModelScope.launch(Dispatchers.IO){
+            val item  = cartList[position]
+            val delete = ArrayList<Cart>()
+            for (i in cartRoomList)
+                if (item.product?.id == i.productID){
+                    delete.add(i)
+                }
+            viewModelRepository.deleteCart(delete.toTypedArray())
+            cartList.remove(item)
+            cartListLiveData.postValue(cartList)
+        }
+    }
+
+    fun updateItemCart(position: Int, isAdd: Boolean){
+        viewModelScope.launch(Dispatchers.IO){
+            val product = cartList[position].product
+            var number = cartList[position].number
+            if(isAdd){
+                number += 1
+            } else{
+                number -=1
+            }
+            viewModelRepository.updateCart(userAccount, product, number)
+            cartList[position].number = number
+            cartListLiveData.postValue(cartList)
         }
     }
 }

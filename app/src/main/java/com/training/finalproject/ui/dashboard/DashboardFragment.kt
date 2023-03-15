@@ -5,7 +5,6 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.fragment.app.FragmentTransaction
 import androidx.fragment.app.activityViewModels
 import com.google.android.material.tabs.TabLayout
 import com.training.finalproject.ui.shopping.HomeFragment
@@ -40,17 +39,17 @@ class DashboardFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        val tablayout = binding.bottomNavigation
-        tablayout.apply {
-            addTab(tablayout.newTab().setText(R.string.home).setIcon(R.drawable.ic_home), true)
-            addTab(tablayout.newTab().setText(R.string.feeds).setIcon(R.drawable.ic_feeds))
+        val tabLayout = binding.bottomNavigation
+        tabLayout.apply {
+            addTab(tabLayout.newTab().setText(R.string.home).setIcon(R.drawable.ic_home), true)
+            addTab(tabLayout.newTab().setText(R.string.feeds).setIcon(R.drawable.ic_feeds))
             addTab(
-                tablayout.newTab().setText(R.string.transaction).setIcon(R.drawable.ic_transaction)
+                tabLayout.newTab().setText(R.string.transaction).setIcon(R.drawable.ic_transaction)
             )
-            addTab(tablayout.newTab().setText(R.string.my_profile).setIcon(R.drawable.ic_myprofile))
+            addTab(tabLayout.newTab().setText(R.string.my_profile).setIcon(R.drawable.ic_myprofile))
 
         }
-        tablayout.addOnTabSelectedListener(object : TabLayout.OnTabSelectedListener {
+        tabLayout.addOnTabSelectedListener(object : TabLayout.OnTabSelectedListener {
             override fun onTabSelected(tab: TabLayout.Tab?) {
                 when (tab?.position) {
                     0 -> replaceFragmentFromBottomNav(HomeFragment())

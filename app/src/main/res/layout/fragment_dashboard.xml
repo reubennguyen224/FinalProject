@@ -23,6 +23,7 @@
         app:tabIconTint="@color/item_tab_color_selected"
         app:tabIndicatorColor="@color/point"
         app:tabIndicatorGravity="top"
+        app:tabIndicatorAnimationMode="elastic"
         app:tabSelectedTextColor="@color/point"
         app:tabTextAppearance="@style/bottomNavigation" />
 </androidx.constraintlayout.widget.ConstraintLayout>

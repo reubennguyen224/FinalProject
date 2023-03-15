@@ -38,6 +38,10 @@ class CartAdapter : RecyclerView.Adapter<CartAdapter.CartViewHolder>() {
             binding.btnAddProduct.setOnClickListener {
                 onUpdateNumberClick?.invoke(true, adapterPosition)
             }
+
+            binding.btnSubtractProduct.setOnClickListener {
+                onUpdateNumberClick?.invoke(false, adapterPosition)
+            }
         }
     }
 

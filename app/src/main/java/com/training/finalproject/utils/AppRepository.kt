@@ -14,12 +14,34 @@ class AppRepository(private val context: Context) {
     suspend fun insertCart(user: User, product: HomeRecyclerViewItem.Product?, number: Int = 1) {
         val checkExist = product?.let { appDAO.checkCartExist(it.id) }
         if (checkExist?.size == 1)
-            appDAO.updateCart(Cart(id = checkExist[0].id, uid = checkExist[0].uid, productID = checkExist[0].productID, number = number + checkExist[0].number))
-        else{
+            appDAO.updateCart(
+                Cart(
+                    id = checkExist[0].id,
+                    uid = checkExist[0].uid,
+                    productID = checkExist[0].productID,
+                    number = number + checkExist[0].number
+                )
+            )
+        else {
             val cartItem = product?.id?.let { Cart(uid = user.id, productID = it, number = number) }
             if (cartItem != null) {
                 appDAO.insertUserCart(cartItem)
             }
+        }
+    }
+
+    suspend fun updateCart(user: User, product: HomeRecyclerViewItem.Product?, number: Int) {
+        val checkExist = product?.let { appDAO.checkCartExist(it.id) }
+        if (checkExist?.size == 1) {
+            appDAO.updateCart(
+                Cart(
+                    id = checkExist[0].id,
+                    uid = checkExist[0].uid,
+                    productID = checkExist[0].productID,
+                    number = number
+                )
+            )
+
         }
     }
 
@@ -35,13 +57,13 @@ class AppRepository(private val context: Context) {
         return appDAO.getBadge(uid)
     }
 
-    fun deleteCart(list: Array<Cart>){
+    fun deleteCart(list: Array<Cart>) {
         appDAO.deleteCart(cart = list)
     }
 
     fun findProduct(id: Int): HomeRecyclerViewItem.Product? {
         var product: HomeRecyclerViewItem.Product? = null
-        getAPI?.getProductDetail(id = id)?.enqueue(object : Callback<HomeRecyclerViewItem.Product> {
+        getAPI.getProductDetail(id = id)?.enqueue(object : Callback<HomeRecyclerViewItem.Product> {
             override fun onResponse(
                 call: Call<HomeRecyclerViewItem.Product>,
                 response: Response<HomeRecyclerViewItem.Product>
@@ -78,8 +100,6 @@ class AppRepository(private val context: Context) {
         })
         return reviewList
     }
-
-
 
 
 }
