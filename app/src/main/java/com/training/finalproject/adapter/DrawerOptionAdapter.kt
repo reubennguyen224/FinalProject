@@ -6,11 +6,9 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.AsyncListDiffer
 import androidx.recyclerview.widget.DiffUtil
-import com.training.finalproject.databinding.ItemOptionsLayoutBinding
 import androidx.recyclerview.widget.RecyclerView
-import com.training.finalproject.DiffUtilCallbackOption
 import com.training.finalproject.R
-import com.training.finalproject.model.Option
+import com.training.finalproject.databinding.ItemOptionsLayoutBinding
 import com.training.finalproject.model.OptionDrawer
 
 class DrawerOptionAdapter : RecyclerView.Adapter<DrawerOptionAdapter.DrawerHolder>() {
@@ -25,6 +23,7 @@ class DrawerOptionAdapter : RecyclerView.Adapter<DrawerOptionAdapter.DrawerHolde
         val icon = binding.imgIconOption
         val viewChosen = binding.imgChosenOption
         val nameOption = binding.txtNameOption
+
         init {
             binding.root.setOnClickListener {
                 listener.onClick(adapterPosition)
@@ -32,7 +31,7 @@ class DrawerOptionAdapter : RecyclerView.Adapter<DrawerOptionAdapter.DrawerHolde
         }
     }
 
-    fun setOnClickListener(listener: OnClickListener){
+    fun setOnClickListener(listener: OnClickListener) {
         this.mListener = listener
     }
 
@@ -49,7 +48,7 @@ class DrawerOptionAdapter : RecyclerView.Adapter<DrawerOptionAdapter.DrawerHolde
     override fun onBindViewHolder(holder: DrawerHolder, position: Int) {
         holder.icon.setBackgroundResource(differ.currentList[position].icon)
         holder.nameOption.text = differ.currentList[position].nameOption
-        if (differ.currentList[position].status){
+        if (differ.currentList[position].status) {
             holder.viewChosen.setBackgroundResource(R.color.price)
             holder.nameOption.setTextColor(Color.parseColor("#06AB8D"))
             holder.icon.setColorFilter(Color.parseColor("#06AB8D"))
@@ -66,15 +65,15 @@ class DrawerOptionAdapter : RecyclerView.Adapter<DrawerOptionAdapter.DrawerHolde
     }
 
     override fun onBindViewHolder(holder: DrawerHolder, position: Int, payloads: MutableList<Any>) {
-        if (payloads.isEmpty()){
+        if (payloads.isEmpty()) {
             super.onBindViewHolder(holder, position, payloads)
-        } else{
+        } else {
             val option = payloads[0] as Bundle
-            for (key in option.keySet()){
-                if (key ==  "statusLogin"){
+            for (key in option.keySet()) {
+                if (key == "statusLogin") {
                     holder.icon.setBackgroundResource(differ.currentList[position].icon)
                     holder.nameOption.text = differ.currentList[position].nameOption
-                    if (differ.currentList[position].status){
+                    if (differ.currentList[position].status) {
                         holder.viewChosen.setBackgroundResource(R.color.price)
                     } else {
                         holder.viewChosen.setBackgroundResource(R.color.transfer)
@@ -85,16 +84,25 @@ class DrawerOptionAdapter : RecyclerView.Adapter<DrawerOptionAdapter.DrawerHolde
 
     }
 
-    private val diffCall = object : DiffUtil.ItemCallback<OptionDrawer>(){
-        override fun areItemsTheSame(oldItem: OptionDrawer, newItem: OptionDrawer): Boolean { //add and remove
+    private val diffCall = object : DiffUtil.ItemCallback<OptionDrawer>() {
+        override fun areItemsTheSame(
+            oldItem: OptionDrawer,
+            newItem: OptionDrawer
+        ): Boolean { //add and remove
             return oldItem.nameOption == newItem.nameOption
         }
 
-        override fun areContentsTheSame(oldItem: OptionDrawer, newItem: OptionDrawer): Boolean { // update
+        override fun areContentsTheSame(
+            oldItem: OptionDrawer,
+            newItem: OptionDrawer
+        ): Boolean { // update
             return oldItem.status == newItem.status
         }
 
-        override fun getChangePayload(oldItem: OptionDrawer, newItem: OptionDrawer): Any? { //refresh 1 component in total
+        override fun getChangePayload(
+            oldItem: OptionDrawer,
+            newItem: OptionDrawer
+        ): Any? { //refresh 1 component in total
 //            return super.getChangePayload(oldItem, newItem)
             val diffBundle = Bundle()
             if (oldItem.status != newItem.status) {

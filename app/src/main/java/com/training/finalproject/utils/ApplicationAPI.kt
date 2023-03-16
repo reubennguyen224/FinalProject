@@ -1,8 +1,6 @@
 package com.training.finalproject.utils
 
-import androidx.lifecycle.LiveData
 import com.training.finalproject.model.HomeRecyclerViewItem
-import com.training.finalproject.model.Product
 import com.training.finalproject.model.ProductX
 import com.training.finalproject.model.ReviewItem
 import retrofit2.Call

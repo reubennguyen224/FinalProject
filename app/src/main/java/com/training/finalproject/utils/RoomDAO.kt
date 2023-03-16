@@ -3,12 +3,9 @@ package com.training.finalproject
 import android.content.Context
 import androidx.lifecycle.LiveData
 import androidx.room.*
-import androidx.sqlite.db.SupportSQLiteDatabase
 import com.training.finalproject.model.Cart
 import com.training.finalproject.model.Product
 import com.training.finalproject.model.User
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.launch
 
 @Dao
 interface RoomDAO {

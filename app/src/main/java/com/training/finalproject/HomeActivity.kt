@@ -2,20 +2,14 @@ package com.training.finalproject
 
 import android.os.Build
 import android.os.Bundle
-import android.view.Gravity
 import android.view.View
-import android.view.WindowManager
 import androidx.activity.viewModels
 import androidx.annotation.RequiresApi
-import androidx.appcompat.app.ActionBarDrawerToggle
 import androidx.appcompat.app.AppCompatActivity
-import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.toArgb
 import androidx.core.view.GravityCompat
 import androidx.drawerlayout.widget.DrawerLayout
 import com.training.finalproject.databinding.ActivityHomeBinding
 import com.training.finalproject.ui.dashboard.DashboardFragment
-import com.training.finalproject.ui.shopping.CartFragment
 import com.training.finalproject.utils.MyApplication
 import com.training.finalproject.utils.replaceFragment
 import com.training.finalproject.viewmodel.HomeFragmentViewModel
@@ -44,7 +38,6 @@ class HomeActivity : AppCompatActivity() {
 
             override fun onDrawerClosed(drawerView: View) {
 //                super.onDrawerClosed(drawerView)
-//                supportFragmentManager.popBackStack()
             }
 
             override fun onDrawerStateChanged(newState: Int) = Unit
@@ -59,7 +52,7 @@ class HomeActivity : AppCompatActivity() {
         viewModel.getCart((application as MyApplication).repository)
     }
 
-    fun openDrawer(){
+    fun openDrawer() {
         binding.drawerLayout.openDrawer(GravityCompat.START)
     }
 

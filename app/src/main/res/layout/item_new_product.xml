@@ -22,7 +22,7 @@
         android:layout_marginTop="11dp"
         android:fontFamily="@font/poppins_light"
         android:marqueeRepeatLimit="marquee_forever"
-        android:maxWidth="155dp"
+        android:maxWidth="140dp"
         android:singleLine="true"
         android:textColor="@color/black"
         android:textStyle="bold"

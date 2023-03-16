@@ -1,13 +1,11 @@
 package com.training.finalproject.authentication
 
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
+import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
-import androidx.fragment.app.viewModels
 import com.training.finalproject.R
 import com.training.finalproject.databinding.FragmentRegisterBinding
 import com.training.finalproject.model.User
@@ -22,7 +20,7 @@ class RegisterFragment : Fragment() {
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
         _binding = FragmentRegisterBinding.inflate(inflater, container, false)
         val view = binding.root
         // Inflate the layout for this fragment
@@ -35,8 +33,8 @@ class RegisterFragment : Fragment() {
             replaceFragment(LoginFragment(), R.id.loginContainer, true)
         }
 
-        viewModel.statusRegister.observe(viewLifecycleOwner){
-            if (it == true){
+        viewModel.statusRegister.observe(viewLifecycleOwner) {
+            if (it == true) {
                 parentFragmentManager.popBackStack()
             }
         }
@@ -52,12 +50,20 @@ class RegisterFragment : Fragment() {
             if (!password.matches(Regex("(.*\\d.*)")))
                 binding.txtPasswordInput.error = "Password must contain at least 1 number!"
             if (!password.matches(Regex("(.*[A-Z].*)")))
-                binding.txtPasswordInput.error = "Password must contain at least 1 upper case letter!"
+                binding.txtPasswordInput.error =
+                    "Password must contain at least 1 upper case letter!"
             if (!password.matches(Regex("^(?=.*[_.()\$&@]).*\$")))
                 binding.txtPasswordInput.error = "Password must contain at least 1 symbol!"
-            if (password == passwordConfirm){
-                viewModel.register(User(email = email, password = password, fullName = userFullName, phoneNumber = phoneNumber))
-            } else{
+            if (password == passwordConfirm) {
+                viewModel.register(
+                    User(
+                        email = email,
+                        password = password,
+                        fullName = userFullName,
+                        phoneNumber = phoneNumber
+                    )
+                )
+            } else {
                 binding.txtPasswordInput.error = "Passwords do not match!"
                 binding.txtPasswordConfirmInput.error = "Passwords do not match!"
             }

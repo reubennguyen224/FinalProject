@@ -8,12 +8,14 @@ import com.google.gson.Gson
 import com.training.finalproject.model.*
 import com.training.finalproject.utils.AppRepository
 import com.training.finalproject.utils.getAPI
-import kotlinx.coroutines.*
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 
-class HomeFragmentViewModel() : ViewModel() {
+class HomeFragmentViewModel : ViewModel() {
 
     lateinit var viewModelRepository: AppRepository
 
@@ -100,10 +102,13 @@ class HomeFragmentViewModel() : ViewModel() {
                 ) {
                     val bodyList = response.body()
                     bannerList.clear()
-                    if (bodyList != null)
+                    if (bodyList != null) {
                         bannerList.addAll(bodyList)
-                    homeList[0] = bannerList
-                    homeListLiveData.postValue(homeList)
+                        val list = ArrayList<HomeRecyclerViewItem.Banner>()
+                        list.addAll(bodyList)
+                        homeList[0] = list
+                        homeListLiveData.postValue(homeList)
+                    }
 
                 }
 
@@ -116,17 +121,10 @@ class HomeFragmentViewModel() : ViewModel() {
     }
 
     fun getHomeList() {
-        viewModelScope.launch {
-//            homeList.clear()
-            val deferredBanner = async(Dispatchers.IO + SupervisorJob()) {
-                getAllBanners()
-            }
-            deferredBanner.await()
-            deferredBanner.getCompleted()
-            val deferredProduct = async(Dispatchers.IO + SupervisorJob()) {
-                getAllProducts()
-            }
-            deferredProduct.await()
+
+        viewModelScope.launch(Dispatchers.Default) {
+            getAllBanners()
+            getAllProducts()
             val title = HomeRecyclerViewItem.Title("New Product")
 
             val homeItemList = ArrayList<Any>()
@@ -135,9 +133,12 @@ class HomeFragmentViewModel() : ViewModel() {
             homeItemList.addAll(productList)
 
             homeList = homeItemList
+            delay(2000)
             homeListLiveData.postValue(homeList)
+
         }
     }
+
     private val statusLoadMoreLiveData = MutableLiveData<String>()
 
     fun loadMore(lastProductId: Int) {
@@ -152,9 +153,9 @@ class HomeFragmentViewModel() : ViewModel() {
         }
     }
 
-    private fun getMoreProduct(lastProductId: Int): ArrayList<HomeRecyclerViewItem.Product>{
+    private fun getMoreProduct(lastProductId: Int): ArrayList<HomeRecyclerViewItem.Product> {
         val result = ArrayList<HomeRecyclerViewItem.Product>()
-        viewModelScope.launch(Dispatchers.IO){
+        viewModelScope.launch(Dispatchers.IO) {
 
         }
         return result
@@ -238,10 +239,10 @@ class HomeFragmentViewModel() : ViewModel() {
     }
 
     fun checkoutCart() {
-        viewModelScope.launch(Dispatchers.IO){
+        viewModelScope.launch(Dispatchers.IO) {
             val chosenItem = chosenItemCartList.value ?: ArrayList()
             val checkoutCart = ArrayList<Cart>()
-            for (i in chosenItem){
+            for (i in chosenItem) {
                 for (j in cartRoomList)
                     if (i.product?.id == j.productID)
                         checkoutCart.add(j)
@@ -250,12 +251,12 @@ class HomeFragmentViewModel() : ViewModel() {
         }
     }
 
-    fun deleteItem(position: Int){
-        viewModelScope.launch(Dispatchers.IO){
-            val item  = cartList[position]
+    fun deleteItem(position: Int) {
+        viewModelScope.launch(Dispatchers.IO) {
+            val item = cartList[position]
             val delete = ArrayList<Cart>()
             for (i in cartRoomList)
-                if (item.product?.id == i.productID){
+                if (item.product?.id == i.productID) {
                     delete.add(i)
                 }
             viewModelRepository.deleteCart(delete.toTypedArray())
@@ -264,14 +265,14 @@ class HomeFragmentViewModel() : ViewModel() {
         }
     }
 
-    fun updateItemCart(position: Int, isAdd: Boolean){
-        viewModelScope.launch(Dispatchers.IO){
+    fun updateItemCart(position: Int, isAdd: Boolean) {
+        viewModelScope.launch(Dispatchers.IO) {
             val product = cartList[position].product
             var number = cartList[position].number
-            if(isAdd){
+            if (isAdd) {
                 number += 1
-            } else{
-                number -=1
+            } else {
+                number -= 1
             }
             viewModelRepository.updateCart(userAccount, product, number)
             cartList[position].number = number

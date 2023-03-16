@@ -14,7 +14,7 @@ class CartAdapter : RecyclerView.Adapter<CartAdapter.CartViewHolder>() {
 
     var onCheckClick: ((Int) -> Unit)? = null
     var onDeleteClick: ((Int) -> Unit)? = null
-    var onUpdateNumberClick:((Boolean, Int) -> Unit)? = null
+    var onUpdateNumberClick: ((Boolean, Int) -> Unit)? = null
 
     inner class CartViewHolder(val binding: ItemCartLayoutBinding) :
         RecyclerView.ViewHolder(binding.root) {
@@ -61,7 +61,11 @@ class CartAdapter : RecyclerView.Adapter<CartAdapter.CartViewHolder>() {
         holder.onBind(diff.currentList[position])
     }
 
-    override fun onBindViewHolder(holder: CartViewHolder, position: Int, payloads: MutableList<Any>) {
+    override fun onBindViewHolder(
+        holder: CartViewHolder,
+        position: Int,
+        payloads: MutableList<Any>
+    ) {
         if (payloads.isNotEmpty()) {
             if (payloads[0] == true) {
                 if (diff.currentList[position].checked)

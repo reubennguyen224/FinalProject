@@ -4,11 +4,11 @@ import android.content.Context
 import android.content.Intent
 import android.graphics.Color
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -20,11 +20,11 @@ import com.training.finalproject.viewmodel.HomeFragmentViewModel
 
 class DrawerFragment : Fragment() {
 
-    private var drawerOptionAdapter= DrawerOptionAdapter()
+    private var drawerOptionAdapter = DrawerOptionAdapter()
 
     private var _binding: FragmentDrawerBinding? = null
     private val binding get() = _binding!!
-    private val viewModel : DrawerViewModel by activityViewModels()
+    private val viewModel: DrawerViewModel by activityViewModels()
     private val sharingViewModel: HomeFragmentViewModel by viewModels()
     private val sharedPreferences by lazy {
         activity?.getSharedPreferences("saveInformation", Context.MODE_PRIVATE)
@@ -38,15 +38,15 @@ class DrawerFragment : Fragment() {
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
-        if (_binding == null){
+    ): View {
+        if (_binding == null) {
             _binding = FragmentDrawerBinding.inflate(inflater, container, false)
         }
         viewModel.optionListLiveData.observe(viewLifecycleOwner) {
             drawerOptionAdapter.differ.submitList(it)
             binding.listOption.adapter = drawerOptionAdapter
         }
-        drawerOptionAdapter.setOnClickListener(object : DrawerOptionAdapter.OnClickListener{
+        drawerOptionAdapter.setOnClickListener(object : DrawerOptionAdapter.OnClickListener {
             override fun onClick(position: Int) {
                 viewModel.click(position)
                 Toast.makeText(requireContext(), "Tada + $position", Toast.LENGTH_SHORT).show()
@@ -74,7 +74,7 @@ class DrawerFragment : Fragment() {
             activity?.finish()
         }
 
-        sharingViewModel.userAccountLiveData.observe(viewLifecycleOwner){
+        sharingViewModel.userAccountLiveData.observe(viewLifecycleOwner) {
             binding.headerDrawer.txtBalance.text = it.balance.toString()
             binding.headerDrawer.txtPoints.text = it.point.toString()
         }

@@ -36,7 +36,7 @@ class NewProductDecoration(private val offset: Int) : RecyclerView.ItemDecoratio
         val spanIndex = params.spanIndex
         val spanSize = params.spanSize
 
-        if (spanSize < 2){
+        if (spanSize < 2) {
             if (spanIndex == 0) {
                 outRect.left = offset * 2
             } else {

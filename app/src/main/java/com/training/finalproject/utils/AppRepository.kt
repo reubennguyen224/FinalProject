@@ -2,12 +2,11 @@ package com.training.finalproject.utils
 
 import android.content.Context
 import com.training.finalproject.AppDatabase
-import com.training.finalproject.model.*
-import retrofit2.Call
-import retrofit2.Callback
-import retrofit2.Response
+import com.training.finalproject.model.Cart
+import com.training.finalproject.model.HomeRecyclerViewItem
+import com.training.finalproject.model.User
 
-class AppRepository(private val context: Context) {
+class AppRepository(context: Context) {
 
     var appDAO = AppDatabase.getInstance(context = context).roomDAO()
     val user = appDAO.getAll()
@@ -53,52 +52,8 @@ class AppRepository(private val context: Context) {
         appDAO.insertUser(user)
     }
 
-    suspend fun getBadge(uid: Int): Int {
-        return appDAO.getBadge(uid)
-    }
-
     fun deleteCart(list: Array<Cart>) {
         appDAO.deleteCart(cart = list)
-    }
-
-    fun findProduct(id: Int): HomeRecyclerViewItem.Product? {
-        var product: HomeRecyclerViewItem.Product? = null
-        getAPI.getProductDetail(id = id)?.enqueue(object : Callback<HomeRecyclerViewItem.Product> {
-            override fun onResponse(
-                call: Call<HomeRecyclerViewItem.Product>,
-                response: Response<HomeRecyclerViewItem.Product>
-            ) {
-                val productDetail = response.body()
-                product = productDetail
-            }
-
-            override fun onFailure(call: Call<HomeRecyclerViewItem.Product>, t: Throwable) {
-                product = null
-            }
-
-        })
-        return product
-    }
-
-    fun getAllReviews(): List<ReviewItem> {
-        var reviewList = ReviewList()
-        getAPI?.getReviewsAPI()?.enqueue(object : Callback<List<ReviewItem>> {
-            override fun onResponse(
-                call: Call<List<ReviewItem>>,
-                response: Response<List<ReviewItem>>
-            ) {
-                val bodyList = response.body()
-                if (bodyList != null) {
-                    reviewList.addAll(bodyList)
-                }
-            }
-
-            override fun onFailure(call: Call<List<ReviewItem>>, t: Throwable) {
-                reviewList = ReviewList()
-            }
-
-        })
-        return reviewList
     }
 
 

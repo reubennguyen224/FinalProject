@@ -13,10 +13,10 @@ class CheckoutAdapter : RecyclerView.Adapter<CheckoutAdapter.CheckoutViewHolder>
 
     class CheckoutViewHolder(val binding: ItemProductCheckoutBinding) :
         RecyclerView.ViewHolder(binding.root) {
-        fun bind(cartItem: CartItem){
+        fun bind(cartItem: CartItem) {
             Glide.with(binding.root.context).load(cartItem.product?.image).into(binding.imgProduct)
             binding.txtProductName.text = cartItem.product?.name
-            binding.txtPriceProduct.text = "$"+cartItem.product?.sale_price
+            binding.txtPriceProduct.text = "$" + cartItem.product?.sale_price
             binding.txtQuantityProduct.text = "Quantity ${cartItem.number}"
         }
     }

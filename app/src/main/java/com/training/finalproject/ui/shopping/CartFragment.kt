@@ -11,7 +11,6 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.training.finalproject.R
 import com.training.finalproject.adapter.CartAdapter
 import com.training.finalproject.databinding.FragmentCartBinding
-import com.training.finalproject.model.Cart
 import com.training.finalproject.model.CartItem
 import com.training.finalproject.utils.MyApplication
 import com.training.finalproject.utils.ProductDecoration
@@ -31,6 +30,7 @@ class CartFragment : Fragment() {
         super.onCreate(savedInstanceState)
         activity?.window?.statusBarColor = Color.WHITE
     }
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -51,12 +51,12 @@ class CartFragment : Fragment() {
             updateFooter(list)
         }
 
-        cartAdapter.onUpdateNumberClick = {isAdd, position ->
+        cartAdapter.onUpdateNumberClick = { isAdd, position ->
             viewModel.updateItemCart(position, isAdd)
             val list = cartAdapter.diff.currentList.toMutableList()
             val oldItem = list[position]
             var number = oldItem.number
-            if (isAdd){
+            if (isAdd) {
                 number = number++
             } else number = number--
             val newItem = CartItem(oldItem.id, oldItem.product, number, oldItem.checked)

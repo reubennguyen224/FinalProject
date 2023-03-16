@@ -1,15 +1,15 @@
 package com.training.finalproject.ui.dashboard
 
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import com.google.android.material.tabs.TabLayout
-import com.training.finalproject.ui.shopping.HomeFragment
 import com.training.finalproject.R
 import com.training.finalproject.databinding.FragmentDashboardBinding
+import com.training.finalproject.ui.shopping.HomeFragment
 import com.training.finalproject.utils.MyApplication
 import com.training.finalproject.utils.findFragment
 import com.training.finalproject.utils.replaceFragment
@@ -28,7 +28,7 @@ class DashboardFragment : Fragment() {
         viewModel.setRepository((activity?.application as MyApplication).repository)
         if (parentFragmentManager.findFragmentByTag(HomeFragment::class.java.simpleName) == null)
             replaceFragment(HomeFragment(), R.id.dashboardContainer, true)
-        else{
+        else {
             val fm = findFragment(HomeFragment::class.java.simpleName)
             if (fm != null) {
                 replaceFragment(fm, R.id.dashboardContainer)
@@ -66,7 +66,6 @@ class DashboardFragment : Fragment() {
         })
 
 
-
     }
 
     override fun onResume() {
@@ -78,7 +77,11 @@ class DashboardFragment : Fragment() {
         if (parentFragmentManager.findFragmentByTag(fragment.tag) == null) {
             replaceFragment(fragment, R.id.dashboardContainer, true)
         } else {
-            replaceFragment(parentFragmentManager.findFragmentByTag(fragment.tag)!!, R.id.dashboardContainer, true)
+            replaceFragment(
+                parentFragmentManager.findFragmentByTag(fragment.tag)!!,
+                R.id.dashboardContainer,
+                true
+            )
         }
     }
 }

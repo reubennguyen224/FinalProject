@@ -16,16 +16,16 @@ class ProductDetailViewModel : ViewModel() {
     private val reviewList = ReviewList()
     val productItem = MutableLiveData<ReviewList>()
 
-    fun getReviewList(){
-        viewModelScope.launch(Dispatchers.IO){
+    fun getReviewList() {
+        viewModelScope.launch(Dispatchers.IO) {
             reviewList.clear()
-            getAPI.getReviewsAPI().enqueue(object : Callback<List<ReviewItem>>{
+            getAPI.getReviewsAPI().enqueue(object : Callback<List<ReviewItem>> {
                 override fun onResponse(
                     call: Call<List<ReviewItem>>,
                     response: Response<List<ReviewItem>>
                 ) {
                     val body = response.body()
-                    if (body != null){
+                    if (body != null) {
                         reviewList.addAll(body)
                     }
                     productItem.postValue(reviewList)

@@ -1,10 +1,10 @@
 package com.training.finalproject.ui.shopping
 
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.training.finalproject.adapter.ReviewAdapter
@@ -15,7 +15,7 @@ class ReviewProductFragment : Fragment() {
 
     private var _binding: FragmentReviewProductBinding? = null
     private val binding get() = _binding!!
-    private val viewModel : ProductDetailViewModel by viewModels()
+    private val viewModel: ProductDetailViewModel by viewModels()
     private val reviewAdapter = ReviewAdapter()
 
     override fun onCreateView(
@@ -23,7 +23,7 @@ class ReviewProductFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         _binding = FragmentReviewProductBinding.inflate(inflater, container, false)
-        viewModel.productItem.observe(viewLifecycleOwner){
+        viewModel.productItem.observe(viewLifecycleOwner) {
             reviewAdapter.diff.submitList(it)
         }
         return binding.root
@@ -36,7 +36,8 @@ class ReviewProductFragment : Fragment() {
 
         binding.listReview.apply {
             adapter = reviewAdapter
-            layoutManager = LinearLayoutManager(binding.listReview.context, LinearLayoutManager.VERTICAL, false)
+            layoutManager =
+                LinearLayoutManager(binding.listReview.context, LinearLayoutManager.VERTICAL, false)
             setHasFixedSize(false)
         }
     }

@@ -11,14 +11,15 @@ class ApplicationClient {
 
     companion object {
         private const val BASE_URL =
-            "https://raw.githubusercontent.com/longvuntq/ntqtest/main/data/" //image of server
+            "https://raw.githubusercontent.com/longvuntq/ntqtest/main/data/" //url of web service
         private lateinit var gson: Gson
         private var retrofit: Retrofit? = null
-        private val okHttpBuilder = OkHttpClient.Builder()
-            .readTimeout(9000, TimeUnit.MILLISECONDS)
-            .writeTimeout(9000, TimeUnit.MILLISECONDS)
-            .connectTimeout(15000, TimeUnit.MILLISECONDS)
-            .retryOnConnectionFailure(true)
+        private val okHttpBuilder =
+            OkHttpClient.Builder() // using to process connect to web service using http protocol
+                .readTimeout(9000, TimeUnit.MILLISECONDS) // time limit for read request
+                .writeTimeout(9000, TimeUnit.MILLISECONDS) // time limit for write request
+                .connectTimeout(15000, TimeUnit.MILLISECONDS) // time limit for connect request
+                .retryOnConnectionFailure(true)
 
         fun getInstance(): Retrofit {
             gson = GsonBuilder().setLenient().create()
@@ -26,7 +27,7 @@ class ApplicationClient {
                 retrofit = Retrofit.Builder()
                     .baseUrl(BASE_URL)
                     .client(okHttpBuilder.build())
-                    .addConverterFactory(GsonConverterFactory.create(gson))
+                    .addConverterFactory(GsonConverterFactory.create(gson)) // convert json from web service to model anh from model to json
                     .build()
             return retrofit!!
         }

@@ -152,9 +152,9 @@
             <com.training.finalproject.utils.CustomViewPager
                 android:id="@+id/pagerProduct"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
+                android:layout_height="wrap_content"
                 android:layout_marginTop="15dp"
-                android:minHeight="200dp"
+                android:minHeight="300dp"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toStartOf="@id/guideline7"
                 android:nestedScrollingEnabled="true"

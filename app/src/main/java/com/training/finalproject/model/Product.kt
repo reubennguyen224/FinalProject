@@ -51,7 +51,7 @@ data class CartItem(
     val product: HomeRecyclerViewItem.Product?,
     var number: Int = 0,
     var checked: Boolean = false
-): Parcelable
+) : Parcelable
 
 @Parcelize
 data class ProductX(
@@ -62,11 +62,12 @@ data class ProductX(
     val price: Double,
     val star: Double,
     val image: String,
-): Parcelable
+) : Parcelable
 
 sealed class HomeRecyclerViewItem {
     data class Banner(val id: Int, val image: String = "") : HomeRecyclerViewItem()
     data class Title(val header: String) : HomeRecyclerViewItem()
+
     @Parcelize
     data class Product(
         val id: Int,
@@ -77,6 +78,6 @@ sealed class HomeRecyclerViewItem {
         val star: Double,
         val image: String,
         val description: String = "",
-    ): HomeRecyclerViewItem(), Parcelable
+    ) : HomeRecyclerViewItem(), Parcelable
 }
 

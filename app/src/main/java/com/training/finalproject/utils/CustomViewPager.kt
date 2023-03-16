@@ -19,22 +19,22 @@ class CustomViewPager : ViewPager {
     override fun onMeasure(widthMeasureSpec: Int, heightMeasureSpec: Int) {
         super.onMeasure(widthMeasureSpec, heightMeasureSpec)
         var heightMeasureSpec = heightMeasureSpec
-        if (!animStart && adapter != null){
-            var height =0
+        if (!animStart && adapter != null) {
+            var height: Int
             currentView = (adapter as PagerAdapter).getCurrent()
             height = currentView?.measuredHeight ?: 0
             if (height < minimumHeight)
                 height = minimumHeight
             val newHeight = MeasureSpec.makeMeasureSpec(height, MeasureSpec.EXACTLY)
-            if (layoutParams.height != 0 && heightMeasureSpec != newHeight){
+            if (layoutParams.height != 0 && heightMeasureSpec != newHeight) {
                 val targetHeight = height
                 val currentHeight = layoutParams.height
                 val heightChange = targetHeight - currentHeight
-                val a =object : Animation(){
+                val a = object : Animation() {
                     override fun applyTransformation(interpolatedTime: Float, t: Transformation?) {
-                        if (interpolatedTime >= 1){
+                        if (interpolatedTime >= 1) {
                             layoutParams.height = targetHeight
-                        } else{
+                        } else {
                             val stepHeight = (heightChange * interpolatedTime).toInt()
                             layoutParams.height = currentHeight + stepHeight
                         }
@@ -46,7 +46,7 @@ class CustomViewPager : ViewPager {
                     }
 
                 }
-                a.setAnimationListener(object : AnimationListener{
+                a.setAnimationListener(object : AnimationListener {
                     override fun onAnimationStart(animation: Animation?) {
                         animStart = true
                     }
@@ -60,7 +60,7 @@ class CustomViewPager : ViewPager {
                 a.duration = 1000
                 startAnimation(a)
                 animStart = true
-            } else{
+            } else {
                 heightMeasureSpec = newHeight
             }
         }

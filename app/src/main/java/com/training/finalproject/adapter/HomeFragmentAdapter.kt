@@ -1,6 +1,5 @@
 package com.training.finalproject.adapter
 
-import android.icu.text.CaseMap.Title
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.AsyncListDiffer
@@ -19,10 +18,12 @@ class HomeFragmentAdapter : RecyclerView.Adapter<HomeRecyclerViewHolder>() {
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): HomeRecyclerViewHolder {
         return when (viewType) {
             TITLE -> HomeRecyclerViewHolder.TittleViewHolder(
-                ItemTitleLayoutBinding.inflate(LayoutInflater.from(parent.context), parent, false), onTitleClick
+                ItemTitleLayoutBinding.inflate(LayoutInflater.from(parent.context), parent, false),
+                onTitleClick
             )
             NEWPRODUCT -> HomeRecyclerViewHolder.ProductViewHolder(
-                ItemNewProductBinding.inflate(LayoutInflater.from(parent.context), parent, false), onProductClick
+                ItemNewProductBinding.inflate(LayoutInflater.from(parent.context), parent, false),
+                onProductClick
             )
             BANNER -> HomeRecyclerViewHolder.BannerViewHolder(
                 ItemChildRecyclerBinding.inflate(LayoutInflater.from(parent.context), parent, false)
@@ -48,7 +49,7 @@ class HomeFragmentAdapter : RecyclerView.Adapter<HomeRecyclerViewHolder>() {
                 holder.bind(list)
 
             }
-            is HomeRecyclerViewHolder.LoadMoreViewHolder ->{
+            is HomeRecyclerViewHolder.LoadMoreViewHolder -> {
 
             }
         }
@@ -68,21 +69,21 @@ class HomeFragmentAdapter : RecyclerView.Adapter<HomeRecyclerViewHolder>() {
     var onTitleClick: ((Int) -> Unit)? = null
     var onProductClick: ((Int) -> Unit)? = null
 
-    private val diffCall = object : DiffUtil.ItemCallback<Any>(){
+    private val diffCall = object : DiffUtil.ItemCallback<Any>() {
         override fun areItemsTheSame(oldItem: Any, newItem: Any): Boolean {
             return if (oldItem is ArrayList<*> && newItem is ArrayList<*>) true
             else if (oldItem is HomeRecyclerViewItem.Title && newItem is HomeRecyclerViewItem.Title) true
-            else if (oldItem is HomeRecyclerViewItem.Product && newItem is HomeRecyclerViewItem.Product){
+            else if (oldItem is HomeRecyclerViewItem.Product && newItem is HomeRecyclerViewItem.Product) {
                 oldItem.id == newItem.id
             } else false
         }
 
         override fun areContentsTheSame(oldItem: Any, newItem: Any): Boolean {
-            return if (oldItem is ArrayList<*> && newItem is ArrayList<*>){
+            return if (oldItem is ArrayList<*> && newItem is ArrayList<*>) {
                 (oldItem as ArrayList<HomeRecyclerViewItem.Banner>) == (newItem as ArrayList<HomeRecyclerViewItem.Banner>)
-            } else if (oldItem is HomeRecyclerViewItem.Title && newItem is HomeRecyclerViewItem.Title){
+            } else if (oldItem is HomeRecyclerViewItem.Title && newItem is HomeRecyclerViewItem.Title) {
                 oldItem.header == newItem.header
-            } else if (oldItem is HomeRecyclerViewItem.Product && newItem is HomeRecyclerViewItem.Product){
+            } else if (oldItem is HomeRecyclerViewItem.Product && newItem is HomeRecyclerViewItem.Product) {
                 oldItem == newItem
             } else false
         }

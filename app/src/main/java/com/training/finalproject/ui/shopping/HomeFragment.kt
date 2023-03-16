@@ -37,7 +37,8 @@ class HomeFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        activity?.window?.statusBarColor = resources.getColor(R.color.colorStatus) // set color status bar
+        activity?.window?.statusBarColor =
+            resources.getColor(R.color.colorStatus) // set color status bar
         if (_binding == null)
             _binding = FragmentHomeBinding.inflate(inflater, container, false)
 
@@ -118,7 +119,10 @@ class HomeFragment : Fragment() {
     override fun onSaveInstanceState(outState: Bundle) {
         super.onSaveInstanceState(outState)
         val recyclerViewState = binding.productList.layoutManager?.onSaveInstanceState()
-        outState.putParcelable("recyclerState", recyclerViewState) // save scrolling position of recyclerview
+        outState.putParcelable(
+            "recyclerState",
+            recyclerViewState
+        ) // save scrolling position of recyclerview
     }
 
     override fun onViewStateRestored(savedInstanceState: Bundle?) {

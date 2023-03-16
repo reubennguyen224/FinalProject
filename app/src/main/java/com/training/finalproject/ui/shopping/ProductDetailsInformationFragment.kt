@@ -2,10 +2,10 @@ package com.training.finalproject.ui.shopping
 
 import android.graphics.Rect
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -23,18 +23,18 @@ class ProductDetailsInformationFragment : Fragment() {
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
         _binding = FragmentProductDetailsInformationBinding.inflate(inflater, container, false)
         return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        viewModel.chosenProduct.observe(viewLifecycleOwner){
+        viewModel.chosenProduct.observe(viewLifecycleOwner) {
             binding.txtDescriptionProduct.text = it?.description
         }
 
-        val itemDecoration = object : ItemDecoration(){
+        val itemDecoration = object : ItemDecoration() {
             override fun getItemOffsets(
                 outRect: Rect,
                 view: View,
@@ -46,12 +46,17 @@ class ProductDetailsInformationFragment : Fragment() {
                 outRect.left = 5
                 outRect.right = 2
                 outRect.bottom = 5
-        }}
+            }
+        }
         val colorArrayList = arrayListOf("Red", "Silver", "Black")
         adapterList.diff.submitList(colorArrayList)
         binding.listColor.apply {
             adapter = adapterList
-            layoutManager = LinearLayoutManager(binding.listColor.context, LinearLayoutManager.HORIZONTAL, false)
+            layoutManager = LinearLayoutManager(
+                binding.listColor.context,
+                LinearLayoutManager.HORIZONTAL,
+                false
+            )
             addItemDecoration(itemDecoration)
         }
     }

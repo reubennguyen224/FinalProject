@@ -1,8 +1,8 @@
 package com.training.finalproject
 
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import androidx.activity.viewModels
+import androidx.appcompat.app.AppCompatActivity
 import com.training.finalproject.authentication.LoginFragment
 import com.training.finalproject.authentication.OAuthViewModel
 

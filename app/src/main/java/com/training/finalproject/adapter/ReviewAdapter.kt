@@ -11,7 +11,8 @@ import com.training.finalproject.model.ReviewItem
 import com.training.finalproject.utils.convertTimestamp
 
 class ReviewAdapter : RecyclerView.Adapter<ReviewAdapter.ReviewViewHolder>() {
-    class ReviewViewHolder(binding: ItemReviewLayoutBinding) : RecyclerView.ViewHolder(binding.root) {
+    class ReviewViewHolder(binding: ItemReviewLayoutBinding) :
+        RecyclerView.ViewHolder(binding.root) {
         val imgAvatar = binding.imgAvatar
         val txtName = binding.txtUserName
         val rate = binding.rateBarUser

@@ -2,17 +2,13 @@ package com.training.finalproject.ui.shopping
 
 import android.graphics.Color
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.LinearLayout
 import android.widget.Toast
-import androidx.constraintlayout.widget.ConstraintLayout
+import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.viewpager.widget.ViewPager
-import androidx.viewpager2.widget.ViewPager2
-import androidx.viewpager2.widget.ViewPager2.OnPageChangeCallback
 import com.bumptech.glide.Glide
 import com.google.android.material.tabs.TabLayout
 import com.google.android.material.tabs.TabLayout.OnTabSelectedListener
@@ -29,7 +25,7 @@ class ProductDetailFragment : Fragment() {
     private val binding get() = _binding!!
     private var item: HomeRecyclerViewItem.Product? = null
     private var isFavourite = false
-    private val viewModel by activityViewModels<HomeFragmentViewModel> ()
+    private val viewModel by activityViewModels<HomeFragmentViewModel>()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -41,7 +37,7 @@ class ProductDetailFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         _binding = FragmentProductDetailBinding.inflate(inflater, container, false)
-        viewModel.chosenProduct.observe(viewLifecycleOwner){
+        viewModel.chosenProduct.observe(viewLifecycleOwner) {
             binding.txtNameProduct.text = it?.name
             binding.txtNameStore.text = it?.seller
             binding.txtPriceProduct.text = "$${it?.sale_price}"
@@ -50,7 +46,7 @@ class ProductDetailFragment : Fragment() {
             Glide.with(requireContext()).load(it?.image).fitCenter().into(binding.imgProduct)
         }
 
-        viewModel.cartListLiveData.observe(viewLifecycleOwner){
+        viewModel.cartListLiveData.observe(viewLifecycleOwner) {
             var total = 0
             for (i in it) total += i.number
             binding.appBar.badgeCart.text = total.toString()
@@ -66,8 +62,8 @@ class ProductDetailFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         val tabLayout = binding.tabLayoutProduct
 
-        viewModel.numberProduct.observe(viewLifecycleOwner){
-            if (it < 0 ) {
+        viewModel.numberProduct.observe(viewLifecycleOwner) {
+            if (it < 0) {
                 Toast.makeText(requireContext(), "Out of stock", Toast.LENGTH_SHORT).show()
                 binding.txtNumberProduct.text = "0"
             }
@@ -79,10 +75,9 @@ class ProductDetailFragment : Fragment() {
             addTab(tabLayout.newTab().setText("Review"))
             addOnTabSelectedListener(object : OnTabSelectedListener {
                 override fun onTabSelected(tab: TabLayout.Tab?) {
-                    if (tab?.position == 0){
+                    if (tab?.position == 0) {
                         binding.pagerProduct.currentItem = 0
-                    }
-                    else binding.pagerProduct.currentItem = 1
+                    } else binding.pagerProduct.currentItem = 1
 
                 }
 
@@ -97,7 +92,7 @@ class ProductDetailFragment : Fragment() {
             offscreenPageLimit = 2
         }
 
-        binding.pagerProduct.addOnPageChangeListener(object : ViewPager.OnPageChangeListener{
+        binding.pagerProduct.addOnPageChangeListener(object : ViewPager.OnPageChangeListener {
             override fun onPageScrolled(
                 position: Int,
                 positionOffset: Float,
@@ -133,7 +128,11 @@ class ProductDetailFragment : Fragment() {
             val id = viewModel.chosenProduct.value?.id
             val number = binding.txtNumberProduct.text.toString().toInt()
             if (id != null) {
-                viewModel.addToCart(id, number, (requireActivity().application as MyApplication).repository)
+                viewModel.addToCart(
+                    id,
+                    number,
+                    (requireActivity().application as MyApplication).repository
+                )
             }
             Toast.makeText(requireContext(), "Add to cart success!", Toast.LENGTH_SHORT).show()
             parentFragmentManager.popBackStack()
@@ -141,10 +140,10 @@ class ProductDetailFragment : Fragment() {
         }
 
         binding.btnFavourite.setOnClickListener {
-            if (isFavourite){
+            if (isFavourite) {
                 isFavourite = false
                 binding.btnFavourite.setImageResource(R.drawable.ic_checked_favorite)
-            } else{
+            } else {
                 isFavourite = true
                 binding.btnFavourite.setImageResource(R.drawable.ic_uncheck_favorite)
             }
@@ -155,13 +154,14 @@ class ProductDetailFragment : Fragment() {
         }
     }
 
-    fun updateHeightPager(view: View, pager: ViewPager){
+    fun updateHeightPager(view: View, pager: ViewPager) {
         view.post {
-            val wMeasureSpec = View.MeasureSpec.makeMeasureSpec(view.width, View.MeasureSpec.EXACTLY)
+            val wMeasureSpec =
+                View.MeasureSpec.makeMeasureSpec(view.width, View.MeasureSpec.EXACTLY)
             val hMeasureSpec = View.MeasureSpec.makeMeasureSpec(0, View.MeasureSpec.UNSPECIFIED)
             view.measure(wMeasureSpec, hMeasureSpec)
 
-            if (pager.layoutParams.height != view.measuredHeight){
+            if (pager.layoutParams.height != view.measuredHeight) {
                 pager.layoutParams = (pager.layoutParams).also {
                     it.height = view.measuredHeight
                 }

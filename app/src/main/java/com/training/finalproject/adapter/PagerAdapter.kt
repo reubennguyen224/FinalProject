@@ -5,8 +5,6 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.FragmentStatePagerAdapter
-import androidx.lifecycle.Lifecycle
-import androidx.viewpager2.adapter.FragmentStateAdapter
 import com.training.finalproject.ui.shopping.ProductDetailsInformationFragment
 import com.training.finalproject.ui.shopping.ReviewProductFragment
 import com.training.finalproject.utils.CustomViewPager
@@ -14,20 +12,19 @@ import com.training.finalproject.utils.CustomViewPager
 class PagerAdapter(fragmentManager: FragmentManager) :
     FragmentStatePagerAdapter(fragmentManager) {
 
-    fun getViewAtPosition(position: Int): View?{
-        return if (position == 0){
+    fun getViewAtPosition(position: Int): View? {
+        return if (position == 0) {
             ProductDetailsInformationFragment().view
-        }
-        else{
+        } else {
             ReviewProductFragment().view
         }
     }
 
-    fun getCurrent(): View?{
+    fun getCurrent(): View? {
         return getItem(currentPosition).view
     }
 
-    override fun getCount(): Int  = 2
+    override fun getCount(): Int = 2
 
     override fun getItem(position: Int): Fragment {
         return if (position == 0)
@@ -37,9 +34,9 @@ class PagerAdapter(fragmentManager: FragmentManager) :
     }
 
     override fun getPageTitle(position: Int): CharSequence? {
-        return if (position == 1){
+        return if (position == 0) {
             "Details"
-        } else{
+        } else {
             "Review"
         }
     }
@@ -47,8 +44,8 @@ class PagerAdapter(fragmentManager: FragmentManager) :
     private var currentPosition = -1
     override fun setPrimaryItem(container: ViewGroup, position: Int, `object`: Any) {
         super.setPrimaryItem(container, position, `object`)
-        if (position != currentPosition){
-            val pager : CustomViewPager = container as CustomViewPager
+        if (position != currentPosition) {
+            val pager: CustomViewPager = container as CustomViewPager
             currentPosition = position
             getViewAtPosition(currentPosition)?.let { pager.measureCurrentView(it) }
         }
