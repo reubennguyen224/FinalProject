@@ -3,13 +3,12 @@ package com.training.finalproject.authentication
 import android.content.Context.MODE_PRIVATE
 import android.content.Intent
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
-import androidx.fragment.app.viewModels
 import com.training.finalproject.HomeActivity
 import com.training.finalproject.R
 import com.training.finalproject.databinding.FragmentLoginBinding
@@ -27,11 +26,11 @@ class LoginFragment : Fragment() {
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
         _binding = FragmentLoginBinding.inflate(inflater, container, false)
         viewModel.getRememberedAccount(sharedPreferences!!)
-        viewModel.token.observe(viewLifecycleOwner){value ->
-            if (value != 0){
+        viewModel.token.observe(viewLifecycleOwner) { value ->
+            if (value != 0) {
                 val intent = Intent(activity, HomeActivity::class.java)
                 val bundle = Bundle()
                 val user = viewModel.userAccount.value
@@ -42,8 +41,8 @@ class LoginFragment : Fragment() {
             }
         }
 
-        viewModel.userAccount.observe(viewLifecycleOwner){
-            if (it != null){
+        viewModel.userAccount.observe(viewLifecycleOwner) {
+            if (it != null) {
                 binding.txtEmailInput.editText?.setText(it.email)
                 binding.txtPasswordInput.editText?.setText(it.password)
             }
@@ -86,4 +85,17 @@ class LoginFragment : Fragment() {
 
     }
 
+    override fun onSaveInstanceState(outState: Bundle) {
+        super.onSaveInstanceState(outState)
+        outState.putString("email", binding.txtEmailInput.editText?.text.toString())
+        outState.putString("password", binding.txtPasswordInput.editText?.text.toString())
+    }
+
+    override fun onViewStateRestored(savedInstanceState: Bundle?) {
+        super.onViewStateRestored(savedInstanceState)
+        savedInstanceState?.let {
+            binding.txtEmailInput.editText?.setText(it.getString("email", ""))
+            binding.txtPasswordInput.editText?.setText(it.getString("password", ""))
+        }
+    }
 }

@@ -20,10 +20,10 @@ class OAuthViewModel() : ViewModel() {
     val userAccount = MutableLiveData<User>()
     var token = MutableLiveData<Int>()
 
-
     fun checkLogin(user: User) {
         viewModelScope.launch(Dispatchers.IO) {
-            if (user.email == _user.email && user.password == _user.password) {
+            val hashPassword = md5(user.password)
+            if (user.email == _user.email && hashPassword == md5(_user.password)) {
                 statusLogin.postValue(true)
                 userAccount.postValue(_user)
             } else statusLogin.postValue(false)
