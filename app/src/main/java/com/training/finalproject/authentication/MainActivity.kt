@@ -11,10 +11,10 @@ class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
-        if (supportFragmentManager.findFragmentByTag("login_fragment") == null)
+        if (supportFragmentManager.findFragmentByTag("splashFragment") == null)
             supportFragmentManager.beginTransaction()
-                .replace(R.id.loginContainer, LoginFragment(), "login_fragment")
-                .addToBackStack("login_fragment").commit()
+                .replace(R.id.loginContainer, SplashFragment(), "splashFragment")
+                .addToBackStack("splashFragment").commit()
         viewModel.getRememberedAccount(getSharedPreferences("saveInformation", MODE_PRIVATE))
     }
 
