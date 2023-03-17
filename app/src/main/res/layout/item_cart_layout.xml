@@ -92,8 +92,9 @@
         android:layout_height="15dp"
         android:background="@drawable/ic_rubish"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@id/btnAddProduct"
         app:layout_constraintBottom_toBottomOf="@id/btnAddProduct"
         app:layout_constraintTop_toTopOf="@id/btnAddProduct"
-        android:layout_marginEnd="27dp"
+        android:layout_marginStart="59dp"
         android:id="@+id/btnDelete"/>
 </androidx.constraintlayout.widget.ConstraintLayout>

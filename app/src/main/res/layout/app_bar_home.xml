@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:theme="@style/AppBarTheme"
-    tools:context=".HomeActivity">
+    tools:context=".home_activity.HomeActivity">
 
     <com.google.android.material.appbar.AppBarLayout
         android:layout_width="match_parent"
@@ -39,6 +39,7 @@
                     android:layout_height="wrap_content"
                     android:text="@string/home"
                     android:textSize="21sp"
+                    android:id="@+id/txtHeader"
                     android:layout_marginStart="23dp"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintStart_toEndOf="@id/btnDrawer"

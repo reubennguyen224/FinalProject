@@ -5,7 +5,7 @@
     android:layout_height="wrap_content"
     android:padding="25dp"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    tools:context=".ui.shopping.ProductDetailsInformationFragment">
+    tools:context=".home_activity.shopping.detail_product.presenter.ProductDetailsInformationFragment">
 
     <TextView
         android:layout_width="match_parent"
@@ -30,6 +30,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:id="@+id/listColor"
+        android:minHeight="100dp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/txtHeaderColor"/>
 </androidx.constraintlayout.widget.ConstraintLayout>

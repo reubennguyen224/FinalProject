@@ -1,13 +1,15 @@
 package com.training.finalproject.viewmodel
 
 import android.content.SharedPreferences
-import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.ViewModel
-import androidx.lifecycle.viewModelScope
+import androidx.lifecycle.*
+import androidx.lifecycle.viewmodel.CreationExtras
 import com.google.gson.Gson
 import com.training.finalproject.model.*
-import com.training.finalproject.utils.AppRepository
-import com.training.finalproject.utils.getAPI
+import com.training.finalproject.data.AppRepository
+import com.training.finalproject.data.getAPI
+import com.training.finalproject.home_activity.shopping.cart.model.Cart
+import com.training.finalproject.home_activity.shopping.cart.model.CartItem
+import com.training.finalproject.utils.MyApplication
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
@@ -15,9 +17,7 @@ import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 
-class HomeFragmentViewModel : ViewModel() {
-
-    lateinit var viewModelRepository: AppRepository
+class HomeFragmentViewModel (private val repository: AppRepository): ViewModel() {
 
     private val productList = ArrayList<HomeRecyclerViewItem.Product>()
     val cartList = ArrayList<CartItem>()
@@ -25,35 +25,10 @@ class HomeFragmentViewModel : ViewModel() {
     val homeListLiveData = MutableLiveData<ArrayList<Any>>()
     val userAccountLiveData = MutableLiveData<User>()
     var userAccount = User()
-    val numberProduct = MutableLiveData<Int>()
+
     val cartListLiveData = MutableLiveData<ArrayList<CartItem>>()
-    val chosenItemCartList = MutableLiveData<ArrayList<CartItem>?>()
-    val chosenProduct = MutableLiveData<HomeRecyclerViewItem.Product?>()
-
-    fun setRepository(repository: AppRepository) {
-        viewModelRepository = repository
-    }
-
-    fun changeNumber(state: Boolean) = viewModelScope.launch(Dispatchers.IO) {
-        if (state) {
-            val number = numberProduct.value
-            if (number != null) {
-                numberProduct.postValue(number + 1)
-            }
-        } else {
-            val number = numberProduct.value
-            if (number != null && number > 0) {
-                numberProduct.postValue(number - 1)
-            }
-        }
-    }
-
 
     var bannerList = ArrayList<HomeRecyclerViewItem.Banner>()
-
-    fun resetNumber() = viewModelScope.launch(Dispatchers.IO) {
-        numberProduct.postValue(1)
-    }
 
     private fun getAllProducts() {
         val productsList = ArrayList<HomeRecyclerViewItem.Product>()
@@ -91,6 +66,10 @@ class HomeFragmentViewModel : ViewModel() {
                 override fun onFailure(call: Call<List<ProductX>>, t: Throwable) = Unit
             })
         }
+    }
+
+    fun setCartValue(){
+        cartListLiveData.postValue(cartList)
     }
 
     private fun getAllBanners() {
@@ -173,38 +152,12 @@ class HomeFragmentViewModel : ViewModel() {
         }
     }
 
-    fun getItem(id: Int) {
-        viewModelScope.launch(Dispatchers.IO) {
-            getAPI.getProductDetail(id).enqueue(object : Callback<HomeRecyclerViewItem.Product> {
-                override fun onResponse(
-                    call: Call<HomeRecyclerViewItem.Product>,
-                    response: Response<HomeRecyclerViewItem.Product>
-                ) {
-                    val body = response.body()
-                    if (body != null)
-                        chosenProduct.postValue(body)
-                }
 
-                override fun onFailure(call: Call<HomeRecyclerViewItem.Product>, t: Throwable) =
-                    Unit
-            })
-        }
-    }
 
-    fun addToCart(id: Int, number: Int, repository: AppRepository) =
-        viewModelScope.launch(Dispatchers.IO) {
-            val user = userAccount
-            val product = productList.find {
-                it.id == id
-            }
-            product?.let {
-                repository.insertCart(user = user, product = product, number = number)
-            }
-        }
 
     private val cartRoomList = ArrayList<Cart>()
 
-    fun getCart(repository: AppRepository) {
+    fun getCart() {
         viewModelScope.launch(Dispatchers.IO) {
             cartList.clear()
             val list = repository.getAllCart()
@@ -231,52 +184,13 @@ class HomeFragmentViewModel : ViewModel() {
 
     }
 
-    fun saveChosenItem(list: ArrayList<CartItem>) {
-        viewModelScope.launch(Dispatchers.IO) {
-            chosenItemCartList.postValue(null)
-            chosenItemCartList.postValue(list)
-        }
-    }
-
-    fun checkoutCart() {
-        viewModelScope.launch(Dispatchers.IO) {
-            val chosenItem = chosenItemCartList.value ?: ArrayList()
-            val checkoutCart = ArrayList<Cart>()
-            for (i in chosenItem) {
-                for (j in cartRoomList)
-                    if (i.product?.id == j.productID)
-                        checkoutCart.add(j)
+    companion object{
+        val Factory: ViewModelProvider.Factory = object : ViewModelProvider.Factory{
+            override fun <T : ViewModel> create(modelClass: Class<T>, extras: CreationExtras): T {
+                val application = checkNotNull(extras[ViewModelProvider.AndroidViewModelFactory.APPLICATION_KEY])
+                val savedStateHandle = extras.createSavedStateHandle()
+                return HomeFragmentViewModel((application as MyApplication).repository) as T
             }
-            viewModelRepository.deleteCart(checkoutCart.toTypedArray())
-        }
-    }
-
-    fun deleteItem(position: Int) {
-        viewModelScope.launch(Dispatchers.IO) {
-            val item = cartList[position]
-            val delete = ArrayList<Cart>()
-            for (i in cartRoomList)
-                if (item.product?.id == i.productID) {
-                    delete.add(i)
-                }
-            viewModelRepository.deleteCart(delete.toTypedArray())
-            cartList.remove(item)
-            cartListLiveData.postValue(cartList)
-        }
-    }
-
-    fun updateItemCart(position: Int, isAdd: Boolean) {
-        viewModelScope.launch(Dispatchers.IO) {
-            val product = cartList[position].product
-            var number = cartList[position].number
-            if (isAdd) {
-                number += 1
-            } else {
-                number -= 1
-            }
-            viewModelRepository.updateCart(userAccount, product, number)
-            cartList[position].number = number
-            cartListLiveData.postValue(cartList)
         }
     }
 }

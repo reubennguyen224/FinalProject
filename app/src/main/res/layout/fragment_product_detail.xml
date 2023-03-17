@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/white"
-    tools:context=".ui.shopping.ProductDetailFragment">
+    tools:context=".home_activity.shopping.detail_product.presenter.ProductDetailFragment">
 
     <include
         android:id="@+id/appBar"
@@ -149,7 +149,7 @@
                 app:layout_constraintStart_toEndOf="@id/guideline6"
                 app:layout_constraintTop_toBottomOf="@id/txtNameStore" />
 
-            <com.training.finalproject.utils.CustomViewPager
+            <androidx.viewpager2.widget.ViewPager2
                 android:id="@+id/pagerProduct"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -188,6 +188,7 @@
         android:background="@drawable/ic_btn_sub"
         app:layout_constraintBottom_toBottomOf="@id/btnAddToCart"
         app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toStartOf="@id/txtNumberProduct"
         app:layout_constraintTop_toTopOf="@id/btnAddToCart" />
 
     <TextView
@@ -201,6 +202,7 @@
         android:textSize="12sp"
         app:layout_constraintBottom_toBottomOf="@id/btnSubtractProduct"
         app:layout_constraintStart_toEndOf="@id/btnSubtractProduct"
+        app:layout_constraintEnd_toStartOf="@id/btnAddProduct"
         app:layout_constraintTop_toTopOf="@id/btnSubtractProduct"
         tools:text="100" />
 

@@ -33,26 +33,6 @@ class Product(
     constructor() : this(0)
 }
 
-@Entity(tableName = "cart")
-@Parcelize
-class Cart(
-    @PrimaryKey(autoGenerate = true) val id: Int = 0,
-    @ColumnInfo(name = "uid") val uid: Int = 0,
-    @ColumnInfo(name = "productID") val productID: Int = 0,
-    @ColumnInfo(name = "number") val number: Int = 0
-) : Parcelable {
-    @Ignore
-    constructor() : this(0)
-}
-
-@Parcelize
-data class CartItem(
-    val id: Int = 0,
-    val product: HomeRecyclerViewItem.Product?,
-    var number: Int = 0,
-    var checked: Boolean = false
-) : Parcelable
-
 @Parcelize
 data class ProductX(
     val id: Int,
@@ -63,6 +43,8 @@ data class ProductX(
     val star: Double,
     val image: String,
 ) : Parcelable
+
+class BannerList: ArrayList<HomeRecyclerViewItem.Banner>()
 
 sealed class HomeRecyclerViewItem {
     data class Banner(val id: Int, val image: String = "") : HomeRecyclerViewItem()

@@ -8,6 +8,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.training.finalproject.databinding.ItemChildRecyclerBinding
 import com.training.finalproject.databinding.ItemNewProductBinding
 import com.training.finalproject.databinding.ItemTitleLayoutBinding
+import com.training.finalproject.model.BannerList
 import com.training.finalproject.model.HomeRecyclerViewItem
 
 class HomeFragmentAdapter : RecyclerView.Adapter<HomeRecyclerViewHolder>() {
@@ -67,11 +68,11 @@ class HomeFragmentAdapter : RecyclerView.Adapter<HomeRecyclerViewHolder>() {
     override fun getItemCount(): Int = diff.currentList.size
 
     var onTitleClick: ((Int) -> Unit)? = null
-    var onProductClick: ((Int) -> Unit)? = null
+    var onProductClick: ((HomeRecyclerViewItem.Product) -> Unit)? = null
 
     private val diffCall = object : DiffUtil.ItemCallback<Any>() {
         override fun areItemsTheSame(oldItem: Any, newItem: Any): Boolean {
-            return if (oldItem is ArrayList<*> && newItem is ArrayList<*>) true
+            return if (oldItem is BannerList && newItem is BannerList) true
             else if (oldItem is HomeRecyclerViewItem.Title && newItem is HomeRecyclerViewItem.Title) true
             else if (oldItem is HomeRecyclerViewItem.Product && newItem is HomeRecyclerViewItem.Product) {
                 oldItem.id == newItem.id
@@ -79,15 +80,14 @@ class HomeFragmentAdapter : RecyclerView.Adapter<HomeRecyclerViewHolder>() {
         }
 
         override fun areContentsTheSame(oldItem: Any, newItem: Any): Boolean {
-            return if (oldItem is ArrayList<*> && newItem is ArrayList<*>) {
-                (oldItem as ArrayList<HomeRecyclerViewItem.Banner>) == (newItem as ArrayList<HomeRecyclerViewItem.Banner>)
+            return if (oldItem is BannerList && newItem is BannerList) {
+                oldItem.size == newItem.size && oldItem.containsAll(newItem) && newItem.containsAll(oldItem)
             } else if (oldItem is HomeRecyclerViewItem.Title && newItem is HomeRecyclerViewItem.Title) {
                 oldItem.header == newItem.header
             } else if (oldItem is HomeRecyclerViewItem.Product && newItem is HomeRecyclerViewItem.Product) {
                 oldItem == newItem
             } else false
         }
-
 
     }
 
