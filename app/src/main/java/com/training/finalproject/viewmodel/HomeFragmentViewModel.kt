@@ -7,8 +7,8 @@ import com.google.gson.Gson
 import com.training.finalproject.model.*
 import com.training.finalproject.data.AppRepository
 import com.training.finalproject.data.getAPI
-import com.training.finalproject.home_activity.shopping.cart.model.Cart
-import com.training.finalproject.home_activity.shopping.cart.model.CartItem
+import com.training.finalproject.home_activity.dashboard.shopping.cart.model.Cart
+import com.training.finalproject.home_activity.dashboard.shopping.cart.model.CartItem
 import com.training.finalproject.utils.MyApplication
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
@@ -29,6 +29,10 @@ class HomeFragmentViewModel (private val repository: AppRepository): ViewModel()
     val cartListLiveData = MutableLiveData<ArrayList<CartItem>>()
 
     var bannerList = ArrayList<HomeRecyclerViewItem.Banner>()
+
+    init {
+        getHomeList()
+    }
 
     private fun getAllProducts() {
         val productsList = ArrayList<HomeRecyclerViewItem.Product>()
@@ -56,10 +60,10 @@ class HomeFragmentViewModel (private val repository: AppRepository): ViewModel()
                             )
                         }
 
-                        homeList.addAll(productsList)
+                        //homeList.addAll(productsList)
 
                         productList.addAll(productsList)
-                        homeListLiveData.postValue(homeList)
+                        getHomeList()
                     }
                 }
 
@@ -83,12 +87,9 @@ class HomeFragmentViewModel (private val repository: AppRepository): ViewModel()
                     bannerList.clear()
                     if (bodyList != null) {
                         bannerList.addAll(bodyList)
-                        val list = ArrayList<HomeRecyclerViewItem.Banner>()
-                        list.addAll(bodyList)
-                        homeList[0] = list
-                        homeListLiveData.postValue(homeList)
-                    }
 
+                    }
+                    getHomeList()
                 }
 
                 override fun onFailure(
@@ -99,11 +100,14 @@ class HomeFragmentViewModel (private val repository: AppRepository): ViewModel()
         }
     }
 
+    fun getData(){
+        getAllBanners()
+        getAllProducts()
+    }
+
     fun getHomeList() {
 
-        viewModelScope.launch(Dispatchers.Default) {
-            getAllBanners()
-            getAllProducts()
+        viewModelScope.launch(Dispatchers.Main) {
             val title = HomeRecyclerViewItem.Title("New Product")
 
             val homeItemList = ArrayList<Any>()
@@ -112,7 +116,6 @@ class HomeFragmentViewModel (private val repository: AppRepository): ViewModel()
             homeItemList.addAll(productList)
 
             homeList = homeItemList
-            delay(2000)
             homeListLiveData.postValue(homeList)
 
         }

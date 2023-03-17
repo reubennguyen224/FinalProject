@@ -12,22 +12,33 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.training.finalproject.R
 import com.training.finalproject.home_activity.HomeActivity
 import com.training.finalproject.authentication.MainActivity
 import com.training.finalproject.databinding.FragmentDrawerBinding
+import com.training.finalproject.utils.BaseFragment
+import com.training.finalproject.utils.replaceFragment
 import com.training.finalproject.viewmodel.HomeFragmentViewModel
 
 
-class DrawerFragment : Fragment() {
+class DrawerFragment : BaseFragment<FragmentDrawerBinding>(
+    FragmentDrawerBinding::inflate
+) {
 
     private var drawerOptionAdapter = DrawerOptionAdapter()
 
-    private var _binding: FragmentDrawerBinding? = null
-    private val binding get() = _binding!!
     private val viewModel: DrawerViewModel by activityViewModels()
-    private val sharingViewModel: HomeFragmentViewModel by viewModels()
+    private val sharingViewModel: HomeFragmentViewModel by activityViewModels { HomeFragmentViewModel.Factory }
     private val sharedPreferences by lazy {
         activity?.getSharedPreferences("saveInformation", Context.MODE_PRIVATE)
+    }
+
+    override fun setupView() {
+        drawerOptionAdapter.onClick = {
+            viewModel.click(it)
+            replaceFragment(it.fragment, R.id.fragmentContainer, true)
+            (activity as HomeActivity).closeDrawer()
+        }
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -35,28 +46,12 @@ class DrawerFragment : Fragment() {
         activity?.window?.statusBarColor = Color.WHITE
     }
 
-    override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View {
-        if (_binding == null) {
-            _binding = FragmentDrawerBinding.inflate(inflater, container, false)
-        }
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
         viewModel.optionListLiveData.observe(viewLifecycleOwner) {
             drawerOptionAdapter.differ.submitList(it)
             binding.listOption.adapter = drawerOptionAdapter
         }
-        drawerOptionAdapter.setOnClickListener(object : DrawerOptionAdapter.OnClickListener {
-            override fun onClick(position: Int) {
-                viewModel.click(position)
-                Toast.makeText(requireContext(), "Tada + $position", Toast.LENGTH_SHORT).show()
-            }
-        })
-        return binding.root
-    }
-
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
 
         binding.listOption.apply {
             layoutManager = LinearLayoutManager(requireContext())

@@ -3,7 +3,7 @@ package com.training.finalproject
 import android.content.Context
 import androidx.lifecycle.LiveData
 import androidx.room.*
-import com.training.finalproject.home_activity.shopping.cart.model.Cart
+import com.training.finalproject.home_activity.dashboard.shopping.cart.model.Cart
 import com.training.finalproject.model.Product
 import com.training.finalproject.model.User
 

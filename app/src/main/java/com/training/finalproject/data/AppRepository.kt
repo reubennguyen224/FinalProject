@@ -2,7 +2,7 @@ package com.training.finalproject.data
 
 import android.content.Context
 import com.training.finalproject.AppDatabase
-import com.training.finalproject.home_activity.shopping.cart.model.Cart
+import com.training.finalproject.home_activity.dashboard.shopping.cart.model.Cart
 import com.training.finalproject.model.HomeRecyclerViewItem
 import com.training.finalproject.model.User
 

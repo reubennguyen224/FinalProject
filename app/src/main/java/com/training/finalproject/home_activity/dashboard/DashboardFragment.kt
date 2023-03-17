@@ -1,30 +1,27 @@
 package com.training.finalproject.home_activity.dashboard
 
 import android.os.Bundle
-import android.view.LayoutInflater
 import android.view.View
-import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import com.google.android.material.tabs.TabLayout
 import com.training.finalproject.R
 import com.training.finalproject.databinding.FragmentDashboardBinding
-import com.training.finalproject.home_activity.shopping.HomeFragment
-import com.training.finalproject.utils.MyApplication
+import com.training.finalproject.home_activity.dashboard.home.HomeFragment
+import com.training.finalproject.home_activity.dashboard.feeds.FeedsFragment
+import com.training.finalproject.home_activity.dashboard.myprofile.MyProfileFragment
+import com.training.finalproject.home_activity.dashboard.transaction.TransactionFragment
+import com.training.finalproject.utils.BaseFragment
 import com.training.finalproject.utils.findFragment
 import com.training.finalproject.utils.replaceFragment
 import com.training.finalproject.viewmodel.HomeFragmentViewModel
 
-class DashboardFragment : Fragment() {
-    private var _binding: FragmentDashboardBinding? = null
-    private val binding get() = _binding!!
+class DashboardFragment : BaseFragment<FragmentDashboardBinding>(
+    FragmentDashboardBinding::inflate
+) {
     private val viewModel: HomeFragmentViewModel by activityViewModels{HomeFragmentViewModel.Factory}
 
-    override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View? {
-        _binding = FragmentDashboardBinding.inflate(inflater, container, false)
+    override fun setupView() {
         if (parentFragmentManager.findFragmentByTag(HomeFragment::class.java.simpleName) == null)
             replaceFragment(HomeFragment(), R.id.dashboardContainer, true)
         else {
@@ -33,11 +30,10 @@ class DashboardFragment : Fragment() {
                 replaceFragment(fm, R.id.dashboardContainer)
             }
         }
-        return binding.root
     }
-
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
         val tabLayout = binding.bottomNavigation
         tabLayout.apply {
             addTab(tabLayout.newTab().setText(R.string.home).setIcon(R.drawable.ic_home), true)

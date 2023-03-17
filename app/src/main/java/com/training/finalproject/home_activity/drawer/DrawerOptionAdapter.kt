@@ -11,28 +11,35 @@ import com.training.finalproject.R
 import com.training.finalproject.databinding.ItemOptionsLayoutBinding
 
 class DrawerOptionAdapter : RecyclerView.Adapter<DrawerOptionAdapter.DrawerHolder>() {
-    lateinit var mListener: OnClickListener
 
-    interface OnClickListener {
-        fun onClick(position: Int)
-    }
+    var onClick: ((OptionDrawer)->Unit)? = null
 
-    class DrawerHolder(binding: ItemOptionsLayoutBinding, listener: OnClickListener) :
+    inner class DrawerHolder(val binding: ItemOptionsLayoutBinding) :
         RecyclerView.ViewHolder(binding.root) {
+        fun bind(option: OptionDrawer) {
+            binding.imgChosenOption.setBackgroundResource(option.icon)
+            binding.txtNameOption.text = option.nameOption
+            if (option.status) {
+                binding.imgChosenOption.setBackgroundResource(R.color.price)
+                binding.txtNameOption.setTextColor(Color.parseColor("#06AB8D"))
+                binding.imgIconOption.setColorFilter(Color.parseColor("#06AB8D"))
+            } else {
+                binding.imgChosenOption.setBackgroundResource(R.color.transfer)
+                binding.txtNameOption.setTextColor(Color.parseColor("#8B9E9E"))
+                binding.imgIconOption.setColorFilter(Color.parseColor("#8B9E9E"))
+            }
+            setIsRecyclable(false)
+            binding.root.setOnClickListener {
+                onClick?.invoke(option)
+            }
+        }
+
         val icon = binding.imgIconOption
         val viewChosen = binding.imgChosenOption
         val nameOption = binding.txtNameOption
 
-        init {
-            binding.root.setOnClickListener {
-                listener.onClick(adapterPosition)
-            }
-        }
     }
 
-    fun setOnClickListener(listener: OnClickListener) {
-        this.mListener = listener
-    }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): DrawerHolder {
         return DrawerHolder(
@@ -40,23 +47,12 @@ class DrawerOptionAdapter : RecyclerView.Adapter<DrawerOptionAdapter.DrawerHolde
                 LayoutInflater.from(parent.context),
                 parent,
                 false
-            ), mListener
+            )
         )
     }
 
     override fun onBindViewHolder(holder: DrawerHolder, position: Int) {
-        holder.icon.setBackgroundResource(differ.currentList[position].icon)
-        holder.nameOption.text = differ.currentList[position].nameOption
-        if (differ.currentList[position].status) {
-            holder.viewChosen.setBackgroundResource(R.color.price)
-            holder.nameOption.setTextColor(Color.parseColor("#06AB8D"))
-            holder.icon.setColorFilter(Color.parseColor("#06AB8D"))
-        } else {
-            holder.viewChosen.setBackgroundResource(R.color.transfer)
-            holder.nameOption.setTextColor(Color.parseColor("#8B9E9E"))
-            holder.icon.setColorFilter(Color.parseColor("#8B9E9E"))
-        }
-        holder.setIsRecyclable(false)
+        holder.bind(differ.currentList[position])
     }
 
     override fun getItemCount(): Int {
