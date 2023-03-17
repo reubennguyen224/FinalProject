@@ -1,14 +1,16 @@
-package com.training.finalproject.viewmodel
+package com.training.finalproject.home_activity.dashboard.home
 
 import android.content.SharedPreferences
 import androidx.lifecycle.*
 import androidx.lifecycle.viewmodel.CreationExtras
 import com.google.gson.Gson
-import com.training.finalproject.model.*
 import com.training.finalproject.data.AppRepository
 import com.training.finalproject.data.getAPI
 import com.training.finalproject.home_activity.dashboard.shopping.cart.model.Cart
 import com.training.finalproject.home_activity.dashboard.shopping.cart.model.CartItem
+import com.training.finalproject.model.HomeRecyclerViewItem
+import com.training.finalproject.model.ProductX
+import com.training.finalproject.model.User
 import com.training.finalproject.utils.MyApplication
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
@@ -17,7 +19,7 @@ import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 
-class HomeFragmentViewModel (private val repository: AppRepository): ViewModel() {
+class HomeFragmentViewModel(private val repository: AppRepository) : ViewModel() {
 
     private val productList = ArrayList<HomeRecyclerViewItem.Product>()
     val cartList = ArrayList<CartItem>()
@@ -72,7 +74,7 @@ class HomeFragmentViewModel (private val repository: AppRepository): ViewModel()
         }
     }
 
-    fun setCartValue(){
+    fun setCartValue() {
         cartListLiveData.postValue(cartList)
     }
 
@@ -100,7 +102,7 @@ class HomeFragmentViewModel (private val repository: AppRepository): ViewModel()
         }
     }
 
-    fun getData(){
+    fun getData() {
         getAllBanners()
         getAllProducts()
     }
@@ -156,8 +158,6 @@ class HomeFragmentViewModel (private val repository: AppRepository): ViewModel()
     }
 
 
-
-
     private val cartRoomList = ArrayList<Cart>()
 
     fun getCart() {
@@ -187,10 +187,11 @@ class HomeFragmentViewModel (private val repository: AppRepository): ViewModel()
 
     }
 
-    companion object{
-        val Factory: ViewModelProvider.Factory = object : ViewModelProvider.Factory{
+    companion object {
+        val Factory: ViewModelProvider.Factory = object : ViewModelProvider.Factory {
             override fun <T : ViewModel> create(modelClass: Class<T>, extras: CreationExtras): T {
-                val application = checkNotNull(extras[ViewModelProvider.AndroidViewModelFactory.APPLICATION_KEY])
+                val application =
+                    checkNotNull(extras[ViewModelProvider.AndroidViewModelFactory.APPLICATION_KEY])
                 val savedStateHandle = extras.createSavedStateHandle()
                 return HomeFragmentViewModel((application as MyApplication).repository) as T
             }

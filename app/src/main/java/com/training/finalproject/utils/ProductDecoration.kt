@@ -2,9 +2,7 @@ package com.training.finalproject.utils
 
 import android.graphics.Rect
 import android.view.View
-import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import androidx.recyclerview.widget.RecyclerView.ItemDecoration
 
 class ProductDecoration(private val offset: Int) : RecyclerView.ItemDecoration() {
     override fun getItemOffsets(

@@ -81,7 +81,9 @@ class HomeFragmentAdapter : RecyclerView.Adapter<HomeRecyclerViewHolder>() {
 
         override fun areContentsTheSame(oldItem: Any, newItem: Any): Boolean {
             return if (oldItem is BannerList && newItem is BannerList) {
-                oldItem.size == newItem.size && oldItem.containsAll(newItem) && newItem.containsAll(oldItem)
+                oldItem.size == newItem.size && oldItem.containsAll(newItem) && newItem.containsAll(
+                    oldItem
+                )
             } else if (oldItem is HomeRecyclerViewItem.Title && newItem is HomeRecyclerViewItem.Title) {
                 oldItem.header == newItem.header
             } else if (oldItem is HomeRecyclerViewItem.Product && newItem is HomeRecyclerViewItem.Product) {

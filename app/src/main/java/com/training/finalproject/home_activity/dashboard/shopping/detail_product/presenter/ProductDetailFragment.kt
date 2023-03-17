@@ -2,11 +2,8 @@ package com.training.finalproject.home_activity.dashboard.shopping.detail_produc
 
 import android.graphics.Color
 import android.os.Bundle
-import android.view.LayoutInflater
 import android.view.View
-import android.view.ViewGroup
 import android.widget.Toast
-import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
 import androidx.viewpager2.widget.ViewPager2
@@ -15,13 +12,13 @@ import com.google.android.material.tabs.TabLayout
 import com.google.android.material.tabs.TabLayout.OnTabSelectedListener
 import com.training.finalproject.R
 import com.training.finalproject.databinding.FragmentProductDetailBinding
-import com.training.finalproject.model.HomeRecyclerViewItem
+import com.training.finalproject.home_activity.dashboard.home.HomeFragmentViewModel
 import com.training.finalproject.home_activity.dashboard.shopping.cart.CartFragment
 import com.training.finalproject.home_activity.dashboard.shopping.detail_product.adapter.PagerAdapter
 import com.training.finalproject.home_activity.dashboard.shopping.detail_product.viewmodel.ProductDetailInformationViewModel
+import com.training.finalproject.model.HomeRecyclerViewItem
 import com.training.finalproject.utils.BaseFragment
 import com.training.finalproject.utils.replaceFragment
-import com.training.finalproject.viewmodel.HomeFragmentViewModel
 
 class ProductDetailFragment : BaseFragment<FragmentProductDetailBinding>(
     FragmentProductDetailBinding::inflate
@@ -29,7 +26,7 @@ class ProductDetailFragment : BaseFragment<FragmentProductDetailBinding>(
     private var item: HomeRecyclerViewItem.Product? = null
     private var isFavourite = false
     private val homeViewModel by activityViewModels<HomeFragmentViewModel>()
-    private val viewModel by viewModels<ProductDetailInformationViewModel>{ ProductDetailInformationViewModel.Factory}
+    private val viewModel by viewModels<ProductDetailInformationViewModel> { ProductDetailInformationViewModel.Factory }
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         activity?.window?.statusBarColor = Color.WHITE
@@ -53,16 +50,13 @@ class ProductDetailFragment : BaseFragment<FragmentProductDetailBinding>(
     override fun onResume() {
         super.onResume()
         homeViewModel.cartListLiveData.observe(viewLifecycleOwner) {
-            var total = 0
-            for (i in it) total += i.number
+            val total = it.size
             binding.appBar.badgeCart.text = total.toString()
         }
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
-
 
         viewModel.resetNumber()
 
@@ -124,7 +118,7 @@ class ProductDetailFragment : BaseFragment<FragmentProductDetailBinding>(
             if (product != null) {
                 viewModel.addToCart(product, number, homeViewModel.userAccount)
             }
-
+            homeViewModel.getCart()
             homeViewModel.setCartValue()
             Toast.makeText(requireContext(), "Add to cart success!", Toast.LENGTH_SHORT).show()
 

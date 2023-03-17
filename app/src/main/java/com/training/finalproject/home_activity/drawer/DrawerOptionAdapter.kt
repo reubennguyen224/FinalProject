@@ -12,7 +12,7 @@ import com.training.finalproject.databinding.ItemOptionsLayoutBinding
 
 class DrawerOptionAdapter : RecyclerView.Adapter<DrawerOptionAdapter.DrawerHolder>() {
 
-    var onClick: ((OptionDrawer)->Unit)? = null
+    var onClick: ((OptionDrawer) -> Unit)? = null
 
     inner class DrawerHolder(val binding: ItemOptionsLayoutBinding) :
         RecyclerView.ViewHolder(binding.root) {

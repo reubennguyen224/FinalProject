@@ -7,16 +7,15 @@ import androidx.fragment.app.activityViewModels
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.training.finalproject.R
-import com.training.finalproject.home_activity.dashboard.home.adapter.HomeFragmentAdapter
 import com.training.finalproject.databinding.FragmentHomeBinding
 import com.training.finalproject.home_activity.HomeActivity
+import com.training.finalproject.home_activity.dashboard.home.adapter.HomeFragmentAdapter
 import com.training.finalproject.home_activity.dashboard.shopping.cart.CartFragment
 import com.training.finalproject.home_activity.dashboard.shopping.detail_product.presenter.ProductDetailFragment
 import com.training.finalproject.utils.BaseFragment
 import com.training.finalproject.utils.ItemSpanSizeLookup
 import com.training.finalproject.utils.NewProductDecoration
 import com.training.finalproject.utils.replaceFragment
-import com.training.finalproject.viewmodel.HomeFragmentViewModel
 
 class HomeFragment : BaseFragment<FragmentHomeBinding>(
     FragmentHomeBinding::inflate
@@ -31,6 +30,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(
         activity?.window?.statusBarColor =
             resources.getColor(R.color.colorStatus) // set color status bar
     }
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
@@ -63,8 +63,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(
                 viewModel.getCart()
                 binding.toolbar.badgeCart.visibility = View.INVISIBLE
             } else binding.toolbar.badgeCart.visibility = View.VISIBLE
-            var total = 0
-            for (i in viewModel.cartList) total += i.number
+            val total = it.size
             binding.toolbar.badgeCart.text = total.toString()
         } // set badge of cart button on toolbar
 

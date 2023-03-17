@@ -25,4 +25,8 @@
         <item name="colorControlNormal">#e9edef</item>
         <item name="colorControlActivated">#FFC061</item>
     </style>
+    <style name="top_round_corner">
+        <item name="cornerSizeTopLeft">10dp</item>
+        <item name="cornerSizeTopRight">10dp</item>
+    </style>
 </resources>

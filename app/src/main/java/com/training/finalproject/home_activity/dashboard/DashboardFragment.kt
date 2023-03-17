@@ -7,19 +7,19 @@ import androidx.fragment.app.activityViewModels
 import com.google.android.material.tabs.TabLayout
 import com.training.finalproject.R
 import com.training.finalproject.databinding.FragmentDashboardBinding
-import com.training.finalproject.home_activity.dashboard.home.HomeFragment
 import com.training.finalproject.home_activity.dashboard.feeds.FeedsFragment
+import com.training.finalproject.home_activity.dashboard.home.HomeFragment
+import com.training.finalproject.home_activity.dashboard.home.HomeFragmentViewModel
 import com.training.finalproject.home_activity.dashboard.myprofile.MyProfileFragment
 import com.training.finalproject.home_activity.dashboard.transaction.TransactionFragment
 import com.training.finalproject.utils.BaseFragment
 import com.training.finalproject.utils.findFragment
 import com.training.finalproject.utils.replaceFragment
-import com.training.finalproject.viewmodel.HomeFragmentViewModel
 
 class DashboardFragment : BaseFragment<FragmentDashboardBinding>(
     FragmentDashboardBinding::inflate
 ) {
-    private val viewModel: HomeFragmentViewModel by activityViewModels{HomeFragmentViewModel.Factory}
+    private val viewModel: HomeFragmentViewModel by activityViewModels { HomeFragmentViewModel.Factory }
 
     override fun setupView() {
         if (parentFragmentManager.findFragmentByTag(HomeFragment::class.java.simpleName) == null)
@@ -31,6 +31,7 @@ class DashboardFragment : BaseFragment<FragmentDashboardBinding>(
             }
         }
     }
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 

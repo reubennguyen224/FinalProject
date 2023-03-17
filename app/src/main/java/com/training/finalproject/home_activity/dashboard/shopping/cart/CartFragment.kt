@@ -7,6 +7,7 @@ import androidx.fragment.app.activityViewModels
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.training.finalproject.R
 import com.training.finalproject.databinding.FragmentCartBinding
+import com.training.finalproject.home_activity.dashboard.home.HomeFragmentViewModel
 import com.training.finalproject.home_activity.dashboard.shopping.CheckoutFragment
 import com.training.finalproject.home_activity.dashboard.shopping.cart.adapter.CartAdapter
 import com.training.finalproject.home_activity.dashboard.shopping.cart.model.CartItem
@@ -14,7 +15,6 @@ import com.training.finalproject.home_activity.dashboard.shopping.cart.viewmodel
 import com.training.finalproject.utils.BaseFragment
 import com.training.finalproject.utils.CartDecoration
 import com.training.finalproject.utils.replaceFragment
-import com.training.finalproject.viewmodel.HomeFragmentViewModel
 import kotlin.math.roundToInt
 
 
@@ -22,7 +22,7 @@ class CartFragment : BaseFragment<FragmentCartBinding>(
     FragmentCartBinding::inflate
 ) {
     private val viewModel: HomeFragmentViewModel by activityViewModels()
-    private val cartViewModel: CartViewModel by activityViewModels{ CartViewModel.Factory }
+    private val cartViewModel: CartViewModel by activityViewModels { CartViewModel.Factory }
     private val cartAdapter = CartAdapter()
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -36,6 +36,7 @@ class CartFragment : BaseFragment<FragmentCartBinding>(
         binding.toolbar.btnCart.visibility = View.INVISIBLE
 
     }
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 

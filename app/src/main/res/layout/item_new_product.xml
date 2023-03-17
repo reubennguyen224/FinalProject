@@ -6,11 +6,13 @@
     android:layout_width="160dp"
     android:layout_height="190dp">
 
-    <ImageView
+    <com.google.android.material.imageview.ShapeableImageView
         android:id="@+id/imgNewProduct"
         android:layout_width="match_parent"
         android:layout_height="97dp"
         android:scaleType="fitCenter"
+        android:background="#f3d9e8"
+        app:shapeAppearanceOverlay="@style/top_round_corner"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />

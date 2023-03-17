@@ -32,5 +32,6 @@ abstract class BaseFragment<VB : ViewBinding>(
         super.onDestroyView()
         _binding = null
     }
+
     internal fun firstTimeCreated(savedInstanceState: Bundle?) = savedInstanceState == null
 }

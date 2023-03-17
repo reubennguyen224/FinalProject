@@ -13,7 +13,7 @@ import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 
-class ProductDetailInformationViewModel(val repository: AppRepository): ViewModel() {
+class ProductDetailInformationViewModel(val repository: AppRepository) : ViewModel() {
     val chosenProduct = MutableLiveData<HomeRecyclerViewItem.Product?>()
 
     fun resetNumber() = viewModelScope.launch(Dispatchers.IO) {
@@ -59,10 +59,11 @@ class ProductDetailInformationViewModel(val repository: AppRepository): ViewMode
         }
     }
 
-    companion object{
-        val Factory: ViewModelProvider.Factory = object : ViewModelProvider.Factory{
+    companion object {
+        val Factory: ViewModelProvider.Factory = object : ViewModelProvider.Factory {
             override fun <T : ViewModel> create(modelClass: Class<T>, extras: CreationExtras): T {
-                val application = checkNotNull(extras[ViewModelProvider.AndroidViewModelFactory.APPLICATION_KEY])
+                val application =
+                    checkNotNull(extras[ViewModelProvider.AndroidViewModelFactory.APPLICATION_KEY])
                 val savedStateHandle = extras.createSavedStateHandle()
                 return ProductDetailInformationViewModel((application as MyApplication).repository) as T
             }

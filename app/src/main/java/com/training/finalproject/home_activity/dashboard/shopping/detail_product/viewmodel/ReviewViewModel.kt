@@ -3,9 +3,9 @@ package com.training.finalproject.home_activity.dashboard.shopping.detail_produc
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.training.finalproject.data.getAPI
 import com.training.finalproject.model.ReviewItem
 import com.training.finalproject.model.ReviewList
-import com.training.finalproject.data.getAPI
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import retrofit2.Call

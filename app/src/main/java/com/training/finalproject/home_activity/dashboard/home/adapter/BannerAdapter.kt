@@ -14,13 +14,11 @@ class BannerAdapter : RecyclerView.Adapter<BannerAdapter.BannerViewHolder>() {
         RecyclerView.ViewHolder(binding.root) {
         fun bind(banner: HomeRecyclerViewItem.Banner) {
             Glide.with(binding.root.context).load(banner.image).into(binding.imgBanner)
-        }
-
-        init {
             binding.root.setOnClickListener {
-                onClick?.invoke(adapterPosition)
+                onClick?.invoke(banner)
             }
         }
+
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): BannerViewHolder {
@@ -41,5 +39,5 @@ class BannerAdapter : RecyclerView.Adapter<BannerAdapter.BannerViewHolder>() {
         holder.bind(items[position])
     }
 
-    var onClick: ((Int) -> Unit)? = null
+    var onClick: ((HomeRecyclerViewItem.Banner) -> Unit)? = null
 }

@@ -10,7 +10,10 @@ import com.training.finalproject.utils.MyApplication
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
-class CartViewModel(private val cartRepository: AppRepository, private val savedStateHandle: SavedStateHandle):ViewModel() {
+class CartViewModel(
+    private val cartRepository: AppRepository,
+    private val savedStateHandle: SavedStateHandle
+) : ViewModel() {
 
     private val cartList = ArrayList<CartItem>()
     val cartListLiveData = MutableLiveData<ArrayList<CartItem>>()
@@ -37,7 +40,7 @@ class CartViewModel(private val cartRepository: AppRepository, private val saved
         }
     }
 
-    fun setCartList(list: List<CartItem>) = viewModelScope.launch(Dispatchers.IO){
+    fun setCartList(list: List<CartItem>) = viewModelScope.launch(Dispatchers.IO) {
 
         cartList.clear()
         cartList.addAll(list)
@@ -76,12 +79,15 @@ class CartViewModel(private val cartRepository: AppRepository, private val saved
         }
     }
 
-    companion object{
-        val Factory: ViewModelProvider.Factory = object : ViewModelProvider.Factory{
+    companion object {
+        val Factory: ViewModelProvider.Factory = object : ViewModelProvider.Factory {
             override fun <T : ViewModel> create(modelClass: Class<T>, extras: CreationExtras): T {
                 val application = checkNotNull(extras[APPLICATION_KEY])
                 val savedStateHandle = extras.createSavedStateHandle()
-                return CartViewModel((application as MyApplication).repository, savedStateHandle) as T
+                return CartViewModel(
+                    (application as MyApplication).repository,
+                    savedStateHandle
+                ) as T
             }
         }
     }

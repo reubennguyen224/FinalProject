@@ -9,9 +9,9 @@ import android.view.ViewGroup
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
-import com.training.finalproject.home_activity.HomeActivity
 import com.training.finalproject.R
 import com.training.finalproject.databinding.FragmentLoginBinding
+import com.training.finalproject.home_activity.HomeActivity
 import com.training.finalproject.model.User
 import com.training.finalproject.utils.replaceFragment
 

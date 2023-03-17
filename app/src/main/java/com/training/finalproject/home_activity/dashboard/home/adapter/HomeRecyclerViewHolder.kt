@@ -44,7 +44,10 @@ sealed class HomeRecyclerViewHolder(binding: ViewBinding) : RecyclerView.ViewHol
         }
     }
 
-    class ProductViewHolder(private val binding: ItemNewProductBinding,val onClick: ((HomeRecyclerViewItem.Product) -> Unit)?) :
+    class ProductViewHolder(
+        private val binding: ItemNewProductBinding,
+        val onClick: ((HomeRecyclerViewItem.Product) -> Unit)?
+    ) :
         HomeRecyclerViewHolder(binding) {
         fun bind(product: HomeRecyclerViewItem.Product) {
             Glide.with(binding.root.context).load(product.image).fitCenter()
@@ -59,9 +62,6 @@ sealed class HomeRecyclerViewHolder(binding: ViewBinding) : RecyclerView.ViewHol
             binding.txtProductRate.text = product.star.toString()
         }
 
-        init {
-
-        }
     }
 
     class LoadMoreViewHolder(private val binding: ItemLoadMoreBinding) :

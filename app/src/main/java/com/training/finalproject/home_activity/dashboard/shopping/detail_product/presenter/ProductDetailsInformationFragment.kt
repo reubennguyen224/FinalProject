@@ -2,10 +2,7 @@ package com.training.finalproject.home_activity.dashboard.shopping.detail_produc
 
 import android.graphics.Rect
 import android.os.Bundle
-import android.view.LayoutInflater
 import android.view.View
-import android.view.ViewGroup
-import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -18,7 +15,7 @@ import com.training.finalproject.utils.BaseFragment
 class ProductDetailsInformationFragment : BaseFragment<FragmentProductDetailsInformationBinding>(
     FragmentProductDetailsInformationBinding::inflate
 ) {
-    private val viewModel: ProductDetailInformationViewModel by viewModels(ownerProducer = {requireParentFragment()})
+    private val viewModel: ProductDetailInformationViewModel by viewModels(ownerProducer = { requireParentFragment() })
 
     private val adapterList = ColorAdapter()
 

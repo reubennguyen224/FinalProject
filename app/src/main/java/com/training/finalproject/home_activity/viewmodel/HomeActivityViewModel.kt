@@ -1,4 +1,4 @@
-package com.training.finalproject.viewmodel
+package com.training.finalproject.home_activity.viewmodel
 
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel

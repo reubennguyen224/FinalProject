@@ -7,15 +7,15 @@ import androidx.fragment.app.activityViewModels
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.training.finalproject.R
 import com.training.finalproject.SuccessDialogFragment
-import com.training.finalproject.home_activity.dashboard.shopping.cart.adapter.CheckoutAdapter
 import com.training.finalproject.databinding.FragmentCheckoutBinding
 import com.training.finalproject.home_activity.dashboard.DashboardFragment
+import com.training.finalproject.home_activity.dashboard.home.HomeFragmentViewModel
+import com.training.finalproject.home_activity.dashboard.shopping.cart.adapter.CheckoutAdapter
 import com.training.finalproject.home_activity.dashboard.shopping.cart.model.CartItem
 import com.training.finalproject.home_activity.dashboard.shopping.cart.viewmodel.CartViewModel
 import com.training.finalproject.utils.BaseFragment
 import com.training.finalproject.utils.ProductDecoration
 import com.training.finalproject.utils.replaceFragment
-import com.training.finalproject.viewmodel.HomeFragmentViewModel
 import kotlin.math.roundToInt
 
 
@@ -24,7 +24,7 @@ class CheckoutFragment : BaseFragment<FragmentCheckoutBinding>(
 ) {
 
     private val viewModel: CartViewModel by activityViewModels { CartViewModel.Factory }
-    private val homeViewModel by activityViewModels<HomeFragmentViewModel> {HomeFragmentViewModel.Factory}
+    private val homeViewModel by activityViewModels<HomeFragmentViewModel> { HomeFragmentViewModel.Factory }
     private val productAdapter = CheckoutAdapter()
 
     override fun onCreate(savedInstanceState: Bundle?) {

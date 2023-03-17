@@ -4,21 +4,16 @@ import android.content.Context
 import android.content.Intent
 import android.graphics.Color
 import android.os.Bundle
-import android.view.LayoutInflater
 import android.view.View
-import android.view.ViewGroup
-import android.widget.Toast
-import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
-import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.training.finalproject.R
-import com.training.finalproject.home_activity.HomeActivity
 import com.training.finalproject.authentication.MainActivity
 import com.training.finalproject.databinding.FragmentDrawerBinding
+import com.training.finalproject.home_activity.HomeActivity
+import com.training.finalproject.home_activity.dashboard.home.HomeFragmentViewModel
 import com.training.finalproject.utils.BaseFragment
 import com.training.finalproject.utils.replaceFragment
-import com.training.finalproject.viewmodel.HomeFragmentViewModel
 
 
 class DrawerFragment : BaseFragment<FragmentDrawerBinding>(

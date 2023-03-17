@@ -29,7 +29,7 @@ class NewProductDecoration(private val offset: Int) : RecyclerView.ItemDecoratio
             }
 
             if (spanIndex + spanSize == spanCount) {
-                outRect.right = offset /2
+                outRect.right = offset / 2
             } else {
                 outRect.right = offset / 2
             }
