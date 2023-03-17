@@ -21,6 +21,7 @@ class FeedsFragment : BaseFragment<FragmentFeedsBinding>(
             (activity as HomeActivity).openDrawer()
         }
         binding.toolbar.txtHeader.text = "Feeds"
+        binding.toolbar.searchBar.visibility = View.GONE
         binding.toolbar.btnCart.setOnClickListener {
             replaceFragment(
                 CartFragment(), R.id.fragmentContainer,
