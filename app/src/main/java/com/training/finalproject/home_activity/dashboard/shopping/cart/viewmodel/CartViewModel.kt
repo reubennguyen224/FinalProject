@@ -15,9 +15,9 @@ class CartViewModel(
     private val savedStateHandle: SavedStateHandle
 ) : ViewModel() {
 
-    private val cartList = ArrayList<CartItem>()
+    private var cartList = ArrayList<CartItem>()
     val cartListLiveData = MutableLiveData<ArrayList<CartItem>>()
-    private val cartRoomList = ArrayList<Cart>()
+    private var cartRoomList = ArrayList<Cart>()
     val chosenItemCartList = MutableLiveData<ArrayList<CartItem>?>()
 
     fun saveChosenItem(list: ArrayList<CartItem>) {
@@ -25,6 +25,28 @@ class CartViewModel(
             chosenItemCartList.postValue(null)
             chosenItemCartList.postValue(list)
         }
+    }
+
+    fun setCheck(list: List<CartItem>) = viewModelScope.launch(Dispatchers.IO){
+        for (i in cartList){
+            i.checked = false
+            val check = list.find { it.id == i.id }?.checked
+            if (check != i.checked)
+                i.checked = check ?: false
+        }
+        cartListLiveData.postValue(cartList)
+    }
+
+    fun saveStateHandle(list: List<CartItem>){
+        savedStateHandle["list"] = list
+        savedStateHandle["cartList"] = cartList
+        savedStateHandle["cartRoomList"] = cartRoomList
+    }
+
+    fun getSaveState(): List<CartItem>?{
+        cartList = savedStateHandle["cartList"] ?: ArrayList()
+        cartRoomList = savedStateHandle["cartRoomList"] ?: ArrayList()
+        return savedStateHandle["list"]
     }
 
     fun checkoutCart() {

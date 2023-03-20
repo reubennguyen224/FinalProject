@@ -1,10 +1,14 @@
 package com.training.finalproject.home_activity.dashboard.shopping.cart
 
 import android.graphics.Color
+import android.os.Build
 import android.os.Bundle
 import android.view.View
+import android.widget.Toast
+import androidx.annotation.RequiresApi
 import androidx.fragment.app.activityViewModels
 import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.training.finalproject.R
 import com.training.finalproject.databinding.FragmentCartBinding
 import com.training.finalproject.home_activity.dashboard.home.HomeFragmentViewModel
@@ -21,26 +25,30 @@ import kotlin.math.roundToInt
 class CartFragment : BaseFragment<FragmentCartBinding>(
     FragmentCartBinding::inflate
 ) {
-    private val viewModel: HomeFragmentViewModel by activityViewModels()
+    private val viewModel: HomeFragmentViewModel by activityViewModels{HomeFragmentViewModel.Factory}
     private val cartViewModel: CartViewModel by activityViewModels { CartViewModel.Factory }
     private val cartAdapter = CartAdapter()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         activity?.window?.statusBarColor = Color.WHITE
+
     }
 
     override fun setupView() {
         cartViewModel.setCartList(viewModel.cartList)
-
+        cartViewModel.getSaveState()
         binding.toolbar.btnCart.visibility = View.INVISIBLE
 
     }
 
+    override fun onSaveInstanceState(outState: Bundle) {
+        super.onSaveInstanceState(outState)
+        cartViewModel.saveStateHandle(cartAdapter.diff.currentList)
+    }
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
-
 
         cartViewModel.cartListLiveData.observe(viewLifecycleOwner) { cartList ->
             var checked = false
@@ -50,6 +58,7 @@ class CartFragment : BaseFragment<FragmentCartBinding>(
             updateFooter(cartList)
             cartAdapter.diff.submitList(cartList)
         }
+
         cartAdapter.onCheckClick = { position ->
             val list = cartAdapter.diff.currentList.toMutableList()
             val oldItem = list[position]
@@ -66,7 +75,9 @@ class CartFragment : BaseFragment<FragmentCartBinding>(
             var number = oldItem.number
             number = if (isAdd) {
                 number++
-            } else number--
+            } else {
+                number--
+            }
             val newItem = CartItem(oldItem.id, oldItem.product, number, oldItem.checked)
             list[position] = newItem
             cartAdapter.diff.submitList(list)
@@ -99,6 +110,7 @@ class CartFragment : BaseFragment<FragmentCartBinding>(
         }
 
         binding.listCartItem.apply {
+            cartAdapter.stateRestorationPolicy = RecyclerView.Adapter.StateRestorationPolicy.PREVENT_WHEN_EMPTY
             adapter = cartAdapter
             layoutManager = LinearLayoutManager(
                 binding.listCartItem.context,
@@ -127,6 +139,8 @@ class CartFragment : BaseFragment<FragmentCartBinding>(
             if (tempList.isNotEmpty()) {
                 cartViewModel.saveChosenItem(ArrayList(tempList))
                 replaceFragment(CheckoutFragment(), R.id.fragmentContainer, true)
+            } else{
+                Toast.makeText(requireContext(), "Choose at least 1 product to continue", Toast.LENGTH_SHORT).show()
             }
         }
     }

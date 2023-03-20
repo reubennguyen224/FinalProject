@@ -58,7 +58,8 @@ class ProductDetailFragment : BaseFragment<FragmentProductDetailBinding>(
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        viewModel.resetNumber()
+        if (savedInstanceState == null)
+            viewModel.resetNumber()
 
         val tabLayout = binding.tabLayoutProduct
 

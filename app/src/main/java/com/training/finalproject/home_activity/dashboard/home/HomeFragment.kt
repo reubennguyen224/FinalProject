@@ -21,7 +21,6 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(
     FragmentHomeBinding::inflate
 ) {
     private val viewModel: HomeFragmentViewModel by activityViewModels()
-
     private val homeAdapter = HomeFragmentAdapter()
     var isLoading = false
 
@@ -33,7 +32,6 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
 
         binding.toolbar.btnDrawer.setOnClickListener {
             (activity as HomeActivity).openDrawer() //open drawer
@@ -69,11 +67,12 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(
 
         if (firstTimeCreated(savedInstanceState))
             viewModel.getData()
+
         binding.productList.apply {
             homeAdapter.stateRestorationPolicy = RecyclerView.Adapter.StateRestorationPolicy.PREVENT
             adapter = homeAdapter
             val mLayoutManager =
-                GridLayoutManager(binding.productList.context, 2, GridLayoutManager.VERTICAL, false)
+                GridLayoutManager(requireContext(), 2, GridLayoutManager.VERTICAL, false)
             mLayoutManager.spanSizeLookup = ItemSpanSizeLookup(homeAdapter)
             val itemDecoration = NewProductDecoration(26)
             addItemDecoration(itemDecoration)
