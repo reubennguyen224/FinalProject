@@ -2,6 +2,8 @@ package com.training.finalproject.home_activity.dashboard.shopping
 
 import android.graphics.Color
 import android.os.Bundle
+import android.text.Editable
+import android.text.TextWatcher
 import android.view.View
 import androidx.fragment.app.activityViewModels
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -42,10 +44,25 @@ class CheckoutFragment : BaseFragment<FragmentCheckoutBinding>(
 
     }
 
+    var coupon = ""
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        if (savedInstanceState != null) binding.txtCoupon.setText(coupon)
 
+        binding.txtCoupon.addTextChangedListener(object : TextWatcher {
+            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) =
+                Unit
+
+            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
+                coupon = if (s?.isNotEmpty() == true)
+                    s.toString()
+                else
+                    ""
+            }
+
+            override fun afterTextChanged(s: Editable?) = Unit
+        })
 
         binding.txtShippingAddress.text = "Domen Tikoro Street:  825 Baker Avenue, Dallas,\n" +
                 "Texas, Zip code  75202"
@@ -91,5 +108,10 @@ class CheckoutFragment : BaseFragment<FragmentCheckoutBinding>(
         binding.txtTax.text = "$1,00"
         binding.txtDeliveryFee.text = "$4,00"
         binding.txtTotalPrice.text = "$${subtotal + 5}"
+    }
+
+    override fun onSaveInstanceState(outState: Bundle) {
+        super.onSaveInstanceState(outState)
+        outState.putString("coupon", coupon)
     }
 }
