@@ -21,7 +21,7 @@ import retrofit2.Response
 
 class HomeFragmentViewModel(private val repository: AppRepository) : ViewModel() {
 
-    private val productList = ArrayList<HomeRecyclerViewItem.Product>()
+    val productList = ArrayList<HomeRecyclerViewItem.Product>()
     val cartList = ArrayList<CartItem>()
     private var homeList = ArrayList<Any>()
     val homeListLiveData = MutableLiveData<ArrayList<Any>>()
@@ -74,7 +74,11 @@ class HomeFragmentViewModel(private val repository: AppRepository) : ViewModel()
         }
     }
 
-    fun setCartValue() {
+    fun setCartValue(list: ArrayList<CartItem>?) {
+        if (list != null){
+            cartList.clear()
+            cartList.addAll(list)
+        }
         cartListLiveData.postValue(cartList)
     }
 
@@ -182,6 +186,7 @@ class HomeFragmentViewModel(private val repository: AppRepository) : ViewModel()
                     cartList.add(item)
                 }
             }
+            delay(5000)
             cartListLiveData.postValue(itemList)
         }
 

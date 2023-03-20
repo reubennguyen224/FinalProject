@@ -14,11 +14,13 @@ import com.training.finalproject.home_activity.dashboard.DashboardFragment
 import com.training.finalproject.home_activity.drawer.DrawerFragment
 import com.training.finalproject.utils.replaceFragment
 import com.training.finalproject.home_activity.dashboard.home.HomeFragmentViewModel
+import com.training.finalproject.home_activity.dashboard.shopping.cart.viewmodel.CartViewModel
 
 class HomeActivity : AppCompatActivity() {
     private lateinit var _binding: ActivityHomeBinding
     private val binding get() = _binding
     private val viewModel: HomeFragmentViewModel by viewModels{ HomeFragmentViewModel.Factory}
+    private val cartViewModel: CartViewModel by viewModels { CartViewModel.Factory }
 
     private lateinit var drawerLayout: DrawerLayout
 

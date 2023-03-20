@@ -17,7 +17,7 @@ class DrawerOptionAdapter : RecyclerView.Adapter<DrawerOptionAdapter.DrawerHolde
     inner class DrawerHolder(val binding: ItemOptionsLayoutBinding) :
         RecyclerView.ViewHolder(binding.root) {
         fun bind(option: OptionDrawer) {
-            binding.imgChosenOption.setBackgroundResource(option.icon)
+            binding.imgIconOption.setImageResource(option.icon)
             binding.txtNameOption.text = option.nameOption
             if (option.status) {
                 binding.imgChosenOption.setBackgroundResource(R.color.price)

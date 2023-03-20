@@ -11,6 +11,7 @@ import com.training.finalproject.databinding.FragmentHomeBinding
 import com.training.finalproject.home_activity.HomeActivity
 import com.training.finalproject.home_activity.dashboard.home.adapter.HomeFragmentAdapter
 import com.training.finalproject.home_activity.dashboard.shopping.cart.CartFragment
+import com.training.finalproject.home_activity.dashboard.shopping.cart.viewmodel.CartViewModel
 import com.training.finalproject.home_activity.dashboard.shopping.detail_product.presenter.ProductDetailFragment
 import com.training.finalproject.utils.BaseFragment
 import com.training.finalproject.utils.ItemSpanSizeLookup
@@ -21,9 +22,14 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(
     FragmentHomeBinding::inflate
 ) {
     private val viewModel: HomeFragmentViewModel by activityViewModels()
+    private val cartViewModel: CartViewModel by activityViewModels { CartViewModel.Factory }
     private val homeAdapter = HomeFragmentAdapter()
     var isLoading = false
 
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        cartViewModel.getNumberCart()
+    }
 
     override fun setupView() {
         activity?.window?.statusBarColor =
@@ -56,13 +62,12 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(
             homeAdapter.diff.submitList(result)
         } //observe home list to display
 
-        viewModel.cartListLiveData.observe(viewLifecycleOwner) {
-            if (it.isEmpty()) {
+        cartViewModel.countLiveData.observe(viewLifecycleOwner) {
+            if (it == 0) {
                 viewModel.getCart()
                 binding.toolbar.badgeCart.visibility = View.INVISIBLE
             } else binding.toolbar.badgeCart.visibility = View.VISIBLE
-            val total = it.size
-            binding.toolbar.badgeCart.text = total.toString()
+            binding.toolbar.badgeCart.text = it.toString()
         } // set badge of cart button on toolbar
 
         if (firstTimeCreated(savedInstanceState))

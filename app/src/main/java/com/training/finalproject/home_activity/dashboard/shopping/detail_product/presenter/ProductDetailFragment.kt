@@ -6,6 +6,7 @@ import android.view.View
 import android.widget.Toast
 import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.lifecycleScope
 import androidx.viewpager2.widget.ViewPager2
 import com.bumptech.glide.Glide
 import com.google.android.material.tabs.TabLayout
@@ -14,11 +15,15 @@ import com.training.finalproject.R
 import com.training.finalproject.databinding.FragmentProductDetailBinding
 import com.training.finalproject.home_activity.dashboard.home.HomeFragmentViewModel
 import com.training.finalproject.home_activity.dashboard.shopping.cart.CartFragment
+import com.training.finalproject.home_activity.dashboard.shopping.cart.viewmodel.CartViewModel
 import com.training.finalproject.home_activity.dashboard.shopping.detail_product.adapter.PagerAdapter
 import com.training.finalproject.home_activity.dashboard.shopping.detail_product.viewmodel.ProductDetailInformationViewModel
 import com.training.finalproject.model.HomeRecyclerViewItem
 import com.training.finalproject.utils.BaseFragment
 import com.training.finalproject.utils.replaceFragment
+import kotlinx.coroutines.coroutineScope
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
 
 class ProductDetailFragment : BaseFragment<FragmentProductDetailBinding>(
     FragmentProductDetailBinding::inflate
@@ -26,6 +31,7 @@ class ProductDetailFragment : BaseFragment<FragmentProductDetailBinding>(
     private var item: HomeRecyclerViewItem.Product? = null
     private var isFavourite = false
     private val homeViewModel by activityViewModels<HomeFragmentViewModel>()
+    private val cartViewModel by activityViewModels<CartViewModel> { CartViewModel.Factory }
     private val viewModel by viewModels<ProductDetailInformationViewModel> { ProductDetailInformationViewModel.Factory }
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -43,16 +49,16 @@ class ProductDetailFragment : BaseFragment<FragmentProductDetailBinding>(
             binding.ratingBar.rating = it?.star?.toFloat() ?: 0.0F
             Glide.with(requireContext()).load(it?.image).fitCenter().into(binding.imgProduct)
         }
-
+        cartViewModel.countLiveData.observe(viewLifecycleOwner) {
+            binding.appBar.badgeCart.text = it.toString()
+        }
         binding.appBar.txtHeaderApp.visibility = View.INVISIBLE
     }
 
     override fun onResume() {
         super.onResume()
-        homeViewModel.cartListLiveData.observe(viewLifecycleOwner) {
-            val total = it.size
-            binding.appBar.badgeCart.text = total.toString()
-        }
+        cartViewModel.getNumberCart()
+
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -119,9 +125,12 @@ class ProductDetailFragment : BaseFragment<FragmentProductDetailBinding>(
             if (product != null) {
                 viewModel.addToCart(product, number, homeViewModel.userAccount)
             }
-            homeViewModel.getCart()
-            homeViewModel.setCartValue()
-            Toast.makeText(requireContext(), "Add to cart success!", Toast.LENGTH_SHORT).show()
+            cartViewModel.getNumberCart()
+            lifecycleScope.launch {
+                delay(5000)
+                Toast.makeText(requireContext(), "Add to cart success!", Toast.LENGTH_SHORT).show()
+            }
+
 
         }
 

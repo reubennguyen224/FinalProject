@@ -36,7 +36,8 @@ class CartFragment : BaseFragment<FragmentCartBinding>(
     }
 
     override fun setupView() {
-        cartViewModel.setCartList(viewModel.cartList)
+//        cartViewModel.setCartList(viewModel.cartList)
+        cartViewModel.getCart(viewModel.productList)
         cartViewModel.getSaveState()
         binding.toolbar.btnCart.visibility = View.INVISIBLE
 
@@ -91,7 +92,7 @@ class CartFragment : BaseFragment<FragmentCartBinding>(
             list.remove(item)
             cartViewModel.deleteItem(item)
             viewModel.cartList.remove(item)
-            viewModel.setCartValue()
+            viewModel.setCartValue(null)
             cartAdapter.diff.submitList(viewModel.cartList.toList())
             updateFooter(list)
         }

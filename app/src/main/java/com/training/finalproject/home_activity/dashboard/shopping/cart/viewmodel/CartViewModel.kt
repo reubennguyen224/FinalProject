@@ -4,8 +4,10 @@ import androidx.lifecycle.*
 import androidx.lifecycle.ViewModelProvider.AndroidViewModelFactory.Companion.APPLICATION_KEY
 import androidx.lifecycle.viewmodel.CreationExtras
 import com.training.finalproject.data.AppRepository
+import com.training.finalproject.home_activity.dashboard.home.HomeFragmentViewModel
 import com.training.finalproject.home_activity.dashboard.shopping.cart.model.Cart
 import com.training.finalproject.home_activity.dashboard.shopping.cart.model.CartItem
+import com.training.finalproject.model.HomeRecyclerViewItem
 import com.training.finalproject.utils.MyApplication
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -19,6 +21,8 @@ class CartViewModel(
     val cartListLiveData = MutableLiveData<ArrayList<CartItem>>()
     private var cartRoomList = ArrayList<Cart>()
     val chosenItemCartList = MutableLiveData<ArrayList<CartItem>?>()
+    private var count = 0
+    val countLiveData = MutableLiveData<Int>()
 
     fun saveChosenItem(list: ArrayList<CartItem>) {
         viewModelScope.launch(Dispatchers.IO) {
@@ -84,6 +88,43 @@ class CartViewModel(
             cartListLiveData.postValue(cartList)
         }
 
+    }
+
+    fun getCart(productList: ArrayList<HomeRecyclerViewItem.Product>) {
+        viewModelScope.launch(Dispatchers.IO) {
+            cartList.clear()
+            val list = cartRepository.getAllCart()
+            cartRoomList.clear()
+            cartRoomList.addAll(list)
+            val itemList = ArrayList<CartItem>()
+            for (i in list.indices) {
+                val product = productList.find {
+                    it.id == list[i].productID
+                }
+                product?.let {
+                    val item = CartItem(
+                        id = list[i].id,
+                        product = product,
+                        number = list[i].number,
+                        checked = false
+                    )
+                    itemList.add(item)
+                    cartList.add(item)
+                }
+            }
+            cartListLiveData.postValue(itemList)
+        }
+
+    }
+
+    fun getNumberCart(){
+        viewModelScope.launch(Dispatchers.IO) {
+            val list = cartRepository.getAllCart()
+            cartRoomList.clear()
+            cartRoomList.addAll(list)
+            count = cartRoomList.size
+            countLiveData.postValue(count)
+        }
     }
 
     fun updateItemCart(position: Int, isAdd: Boolean) {
