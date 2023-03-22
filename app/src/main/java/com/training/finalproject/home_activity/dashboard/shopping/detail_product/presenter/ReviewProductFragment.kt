@@ -13,7 +13,7 @@ class ReviewProductFragment : BaseFragment<FragmentReviewProductBinding>(
     FragmentReviewProductBinding::inflate
 ) {
 
-    private val viewModel: ReviewViewModel by viewModels()
+    private val viewModel: ReviewViewModel by viewModels { ReviewViewModel.Factory }
     private val reviewAdapter = ReviewAdapter()
 
     override fun setupView() {
@@ -27,10 +27,17 @@ class ReviewProductFragment : BaseFragment<FragmentReviewProductBinding>(
         viewModel.reviewListLiveData.observe(viewLifecycleOwner) {
             reviewAdapter.diff.submitList(it)
         }
+        val reviewLayoutManager = object :
+            LinearLayoutManager(binding.listReview.context, VERTICAL, false) {
+            override fun canScrollVertically(): Boolean {
+                return false
+            }
+        }
+
+
         binding.listReview.apply {
             adapter = reviewAdapter
-            layoutManager =
-                LinearLayoutManager(binding.listReview.context, LinearLayoutManager.VERTICAL, false)
+            layoutManager = reviewLayoutManager
             setHasFixedSize(false)
         }
     }

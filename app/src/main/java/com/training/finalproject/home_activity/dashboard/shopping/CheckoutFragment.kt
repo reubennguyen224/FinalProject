@@ -5,6 +5,7 @@ import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
 import android.view.View
+import androidx.core.widget.doOnTextChanged
 import androidx.fragment.app.activityViewModels
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.training.finalproject.R
@@ -50,19 +51,9 @@ class CheckoutFragment : BaseFragment<FragmentCheckoutBinding>(
 
         if (savedInstanceState != null) binding.txtCoupon.setText(coupon)
 
-        binding.txtCoupon.addTextChangedListener(object : TextWatcher {
-            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) =
-                Unit
-
-            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
-                coupon = if (s?.isNotEmpty() == true)
-                    s.toString()
-                else
-                    ""
-            }
-
-            override fun afterTextChanged(s: Editable?) = Unit
-        })
+        binding.txtCoupon.doOnTextChanged { text, _, _, _ ->
+            coupon = text.toString()
+        }
 
         binding.txtShippingAddress.text = "Domen Tikoro Street:  825 Baker Avenue, Dallas,\n" +
                 "Texas, Zip code  75202"

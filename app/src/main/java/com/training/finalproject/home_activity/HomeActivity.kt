@@ -15,6 +15,7 @@ import com.training.finalproject.home_activity.drawer.DrawerFragment
 import com.training.finalproject.utils.replaceFragment
 import com.training.finalproject.home_activity.dashboard.home.HomeFragmentViewModel
 import com.training.finalproject.home_activity.dashboard.shopping.cart.viewmodel.CartViewModel
+import com.training.finalproject.utils.popBackStackInclusive
 
 class HomeActivity : AppCompatActivity() {
     private lateinit var _binding: ActivityHomeBinding
