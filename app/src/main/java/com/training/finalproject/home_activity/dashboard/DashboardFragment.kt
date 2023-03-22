@@ -27,7 +27,7 @@ class DashboardFragment : BaseFragment<FragmentDashboardBinding>(
         else {
             val fm = findFragment(HomeFragment::class.java.simpleName)
             if (fm != null) {
-                replaceFragment(fm, R.id.dashboardContainer)
+                replaceFragment(fm, R.id.dashboardContainer, true)
             }
         }
     }

@@ -95,7 +95,7 @@ class HomeFragmentViewModel(private val repository: AppRepository) : ViewModel()
                         bannerList.addAll(bodyList)
 
                     }
-                    getHomeList()
+
                 }
 
                 override fun onFailure(
