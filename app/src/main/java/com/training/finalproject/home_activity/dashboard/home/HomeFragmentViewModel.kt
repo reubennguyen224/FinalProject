@@ -5,23 +5,20 @@ import androidx.lifecycle.*
 import androidx.lifecycle.viewmodel.CreationExtras
 import com.google.gson.Gson
 import com.training.finalproject.data.AppRepository
-import com.training.finalproject.data.getAPI
 import com.training.finalproject.home_activity.dashboard.shopping.cart.model.Cart
 import com.training.finalproject.home_activity.dashboard.shopping.cart.model.CartItem
 import com.training.finalproject.model.HomeRecyclerViewItem
-import com.training.finalproject.model.ProductX
 import com.training.finalproject.model.User
 import com.training.finalproject.utils.MyApplication
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.async
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
-import retrofit2.Call
-import retrofit2.Callback
-import retrofit2.Response
 
 class HomeFragmentViewModel(private val repository: AppRepository) : ViewModel() {
 
-    val productList = ArrayList<HomeRecyclerViewItem.Product>()
+    var productList = ArrayList<HomeRecyclerViewItem.Product>()
+        private set
     val cartList = ArrayList<CartItem>()
     private var homeList = ArrayList<Any>()
     val homeListLiveData = MutableLiveData<ArrayList<Any>>()
@@ -31,89 +28,51 @@ class HomeFragmentViewModel(private val repository: AppRepository) : ViewModel()
     val cartListLiveData = MutableLiveData<ArrayList<CartItem>>()
 
     var bannerList = ArrayList<HomeRecyclerViewItem.Banner>()
+        private set
 
     init {
         getHomeList()
     }
 
-    private fun getAllProducts() {
+    private suspend fun getAllProducts(): ArrayList<HomeRecyclerViewItem.Product> {
         val productsList = ArrayList<HomeRecyclerViewItem.Product>()
-        productList.clear()
-        viewModelScope.launch(Dispatchers.IO) {
-            getAPI.getProductsAPI().enqueue(object : Callback<List<ProductX>> {
-                override fun onResponse(
-                    call: Call<List<ProductX>>,
-                    response: Response<List<ProductX>>
-                ) {
-                    val bodyList = response.body()
-                    if (bodyList != null) {
-                        for (i in bodyList) {
-                            productsList.add(
-                                HomeRecyclerViewItem.Product(
-                                    id = i.id,
-                                    name = i.name,
-                                    seller = i.seller,
-                                    sale_price = i.sale_price,
-                                    star = i.star,
-                                    price = i.price,
-                                    image = i.image,
-                                    description = ""
-                                )
-                            )
-                        }
+        //productList.clear()
+        productsList.addAll(repository.getProduct())
 
-                        //homeList.addAll(productsList)
-
-                        productList.addAll(productsList)
-                        getHomeList()
-                    }
-                }
-
-                override fun onFailure(call: Call<List<ProductX>>, t: Throwable) = Unit
-            })
-        }
+        return if (productsList != productList)
+            productsList
+        else
+            productList
     }
 
     fun setCartValue(list: ArrayList<CartItem>?) {
-        if (list != null){
+        if (list != null) {
             cartList.clear()
             cartList.addAll(list)
         }
         cartListLiveData.postValue(cartList)
     }
 
-    private fun getAllBanners() {
-        viewModelScope.launch(Dispatchers.IO) {
-            getAPI.getBannerAPI().enqueue(object : Callback<List<HomeRecyclerViewItem.Banner>> {
-                override fun onResponse(
-                    call: Call<List<HomeRecyclerViewItem.Banner>>,
-                    response: Response<List<HomeRecyclerViewItem.Banner>>
-                ) {
-                    val bodyList = response.body()
-                    bannerList.clear()
-                    if (bodyList != null) {
-                        bannerList.addAll(bodyList)
+    private suspend fun getAllBanners(): ArrayList<HomeRecyclerViewItem.Banner> {
+        val bannersList = ArrayList<HomeRecyclerViewItem.Banner>()
+        bannersList.addAll(repository.getBanner())
 
-                    }
-
-                }
-
-                override fun onFailure(
-                    call: Call<List<HomeRecyclerViewItem.Banner>>,
-                    t: Throwable
-                ) = Unit
-            })
-        }
+        return if (bannerList != bannersList) bannersList else bannerList
     }
 
-    fun getData() {
-        getAllBanners()
-        getAllProducts()
+    fun getData() = viewModelScope.launch(Dispatchers.IO) {
+        val productDeferred = async { getAllProducts() }
+        val bannersDeferred = async { getAllBanners() }
+
+        productList = (productDeferred.await())
+        bannerList = bannersDeferred.await()
     }
+
 
     fun getHomeList() {
 
         viewModelScope.launch(Dispatchers.Main) {
+            getData().join()
             val title = HomeRecyclerViewItem.Title("New Product")
 
             val homeItemList = ArrayList<Any>()

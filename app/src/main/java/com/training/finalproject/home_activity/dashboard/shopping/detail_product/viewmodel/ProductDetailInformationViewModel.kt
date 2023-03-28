@@ -8,6 +8,7 @@ import com.training.finalproject.model.HomeRecyclerViewItem
 import com.training.finalproject.model.User
 import com.training.finalproject.utils.MyApplication
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 import retrofit2.Call
 import retrofit2.Callback
@@ -43,19 +44,10 @@ class ProductDetailInformationViewModel(val repository: AppRepository) : ViewMod
 
     fun getItem(id: Int) {
         viewModelScope.launch(Dispatchers.IO) {
-            getAPI.getProductDetail(id).enqueue(object : Callback<HomeRecyclerViewItem.Product> {
-                override fun onResponse(
-                    call: Call<HomeRecyclerViewItem.Product>,
-                    response: Response<HomeRecyclerViewItem.Product>
-                ) {
-                    val body = response.body()
-                    if (body != null)
-                        chosenProduct.postValue(body)
-                }
-
-                override fun onFailure(call: Call<HomeRecyclerViewItem.Product>, t: Throwable) =
-                    Unit
-            })
+            val productDetailFlow = repository.getProductDetail(idProduct = id)
+            productDetailFlow.collect{
+                chosenProduct.postValue(it)
+            }
         }
     }
 

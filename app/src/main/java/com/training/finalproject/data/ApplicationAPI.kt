@@ -4,21 +4,22 @@ import com.training.finalproject.model.HomeRecyclerViewItem
 import com.training.finalproject.model.ProductX
 import com.training.finalproject.model.ReviewItem
 import retrofit2.Call
+import retrofit2.Response
 import retrofit2.http.GET
 import retrofit2.http.Path
 
 interface ApplicationAPI {
 
     @GET("banners")
-    fun getBannerAPI(): Call<List<HomeRecyclerViewItem.Banner>>
+    suspend fun getBannerAPI(): Response<List<HomeRecyclerViewItem.Banner>>
 
     @GET("products")
-    fun getProductsAPI(): Call<List<ProductX>>
+    suspend fun getProductsAPI(): Response<List<ProductX>>
 
     @GET("reviews")
-    fun getReviewsAPI(): Call<List<ReviewItem>>
+    suspend fun getReviewsAPI(): List<ReviewItem>
 
     @GET("product/{id}")
-    fun getProductDetail(@Path(value = "id") id: Int): Call<HomeRecyclerViewItem.Product>
+    suspend fun getProductDetail(@Path(value = "id") id: Int): Response<HomeRecyclerViewItem.Product>
 }
 

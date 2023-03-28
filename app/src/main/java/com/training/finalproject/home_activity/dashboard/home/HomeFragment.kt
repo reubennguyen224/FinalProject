@@ -127,7 +127,6 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(
             "recyclerState",
             recyclerViewState
         ) // save scrolling position of recyclerview
-        Log.e("rr0", "csss")
     }
 
     override fun onResume() {

@@ -45,6 +45,7 @@ class DashboardFragment : BaseFragment<FragmentDashboardBinding>(
             addTab(tabLayout.newTab().setText(R.string.my_profile).setIcon(R.drawable.ic_myprofile))
 
         }
+
         tabLayout.addOnTabSelectedListener(object : TabLayout.OnTabSelectedListener {
             override fun onTabSelected(tab: TabLayout.Tab?) {
                 when (tab?.position) {

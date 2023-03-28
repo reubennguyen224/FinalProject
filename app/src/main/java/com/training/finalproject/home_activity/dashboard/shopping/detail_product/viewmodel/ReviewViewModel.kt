@@ -1,11 +1,9 @@
 package com.training.finalproject.home_activity.dashboard.shopping.detail_product.viewmodel
 
-import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.ViewModel
-import androidx.lifecycle.ViewModelProvider
-import androidx.lifecycle.viewModelScope
+import androidx.lifecycle.*
 import androidx.lifecycle.viewmodel.CreationExtras
 import com.training.finalproject.data.AppRepository
+import com.training.finalproject.data.Resource
 import com.training.finalproject.data.getAPI
 import com.training.finalproject.home_activity.dashboard.home.HomeFragmentViewModel
 import com.training.finalproject.model.ReviewItem
@@ -22,13 +20,12 @@ class ReviewViewModel (private val reviewRepository: AppRepository): ViewModel()
     private val reviewList = ReviewList()
     val reviewListLiveData = MutableLiveData<ReviewList>()
 
-    fun getReviewList() {
-        viewModelScope.launch(Dispatchers.IO) {
-            reviewList.clear()
-            val list = reviewRepository.getReview()
-            delay(2000)
-            reviewList.addAll(list)
-            reviewListLiveData.postValue(reviewList)
+    fun getReviewList()  = liveData(Dispatchers.IO){
+        emit(Resource.loading(data = null))
+        try {
+            emit(Resource.success(data = reviewRepository.getReview()))
+        } catch (e: Exception){
+            emit(Resource.error(data = null, message = e.message ?: "Failed"))
         }
     }
 
