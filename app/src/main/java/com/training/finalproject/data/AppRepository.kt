@@ -4,9 +4,14 @@ import android.content.Context
 import com.training.finalproject.AppDatabase
 import com.training.finalproject.home_activity.dashboard.shopping.cart.model.Cart
 import com.training.finalproject.model.HomeRecyclerViewItem
+import com.training.finalproject.model.ReviewItem
 import com.training.finalproject.model.User
+import com.training.finalproject.utils.safeApiCall
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.flow
+import kotlinx.coroutines.flow.flowOn
 
 class AppRepository(context: Context) {
 
@@ -14,10 +19,11 @@ class AppRepository(context: Context) {
     var appDAO = AppDatabase.getInstance(context = context).roomDAO()
     val user = appDAO.getAll()
     private val apiHelper = ApiHelper(getAPI)
-    val productStateFlow = MutableStateFlow<ArrayList<HomeRecyclerViewItem.Product>>(ArrayList())
     val productFailedStateFlow = MutableStateFlow(false)
 
-    suspend fun getReview() = apiHelper.getReviewsAPI()
+    suspend fun getReview() = safeApiCall {
+        apiHelper.getReviewsAPI()
+    }
 
     suspend fun getBanner(): ArrayList<HomeRecyclerViewItem.Banner> {
         val bannerList = ArrayList<HomeRecyclerViewItem.Banner>()

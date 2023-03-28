@@ -21,12 +21,7 @@ class ReviewViewModel (private val reviewRepository: AppRepository): ViewModel()
     val reviewListLiveData = MutableLiveData<ReviewList>()
 
     fun getReviewList()  = liveData(Dispatchers.IO){
-        emit(Resource.loading(data = null))
-        try {
-            emit(Resource.success(data = reviewRepository.getReview()))
-        } catch (e: Exception){
-            emit(Resource.error(data = null, message = e.message ?: "Failed"))
-        }
+        emit(reviewRepository.getReview())
     }
 
     companion object{
